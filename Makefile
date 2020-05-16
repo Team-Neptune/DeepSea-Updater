@@ -44,8 +44,8 @@ DATA		:=	data
 INCLUDES	:=	include
 ROMFS		:=	romfs
 
-APP_TITLE	:=	Kosmos Updater
-APP_AUTHOR	:=	Nichole Mattera
+APP_TITLE	:=	DeepSea Updater
+APP_AUTHOR	:=	Nichole Mattera, Slluxx
 
 APP_VERSION 		:= 3.1.0
 APP_VERSION_MAJOR	:= 3

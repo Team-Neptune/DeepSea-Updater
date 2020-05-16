@@ -23,13 +23,15 @@
 
 using namespace ku::scenes;
 
-namespace ku {
-    SceneDirector::SceneDirector() {
+namespace ku
+{
+    SceneDirector::SceneDirector()
+    {
         currentSceneDirector = this;
 
         romfsInit();
         setsysInitialize();
-        plInitialize();
+        plInitialize(PlServiceType_User);
 
         SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
@@ -54,15 +56,18 @@ namespace ku {
         _packageDownloadScene = NULL;
         _currentScene = NULL;
 
-        if (!ConfigManager::getReceivedExFATWarning()) {
+        if (!ConfigManager::getReceivedExFATWarning())
+        {
             currentScene = SCENE_EXFAT_WARNING;
         }
-        else if (!ConfigManager::shouldAutoUpdate()) {
+        else if (!ConfigManager::shouldAutoUpdate())
+        {
             currentScene = SCENE_PACKAGE_SELECT;
         }
     }
 
-    SceneDirector::~SceneDirector() {
+    SceneDirector::~SceneDirector()
+    {
         if (_exFatWarningScene != NULL)
             delete _exFatWarningScene;
 
@@ -91,7 +96,8 @@ namespace ku {
         romfsExit();
     }
 
-    bool SceneDirector::direct() {
+    bool SceneDirector::direct()
+    {
         double dTime = _getDeltaTime();
 
         hidScanInput();
@@ -100,107 +106,120 @@ namespace ku {
         // TODO: Handle touch controls
 
         // Unload previous scenes
-        switch(SceneDirector::currentScene) {
-            case SCENE_APP_UPDATE:
-                if (_exFatWarningScene != NULL) {
-                    delete _exFatWarningScene;
-                    _exFatWarningScene = NULL;
-                }
-                break;
+        switch (SceneDirector::currentScene)
+        {
+        case SCENE_APP_UPDATE:
+            if (_exFatWarningScene != NULL)
+            {
+                delete _exFatWarningScene;
+                _exFatWarningScene = NULL;
+            }
+            break;
 
-            case SCENE_PACKAGE_SELECT:
-                if (_appUpdateScene != NULL) {
-                    delete _appUpdateScene;
-                    _appUpdateScene = NULL;
-                }
-                break;
+        case SCENE_PACKAGE_SELECT:
+            if (_appUpdateScene != NULL)
+            {
+                delete _appUpdateScene;
+                _appUpdateScene = NULL;
+            }
+            break;
 
-            case SCENE_PACKAGE_DOWNLOAD:
-                if (_appUpdateScene != NULL) {
-                    delete _appUpdateScene;
-                    _appUpdateScene = NULL;
-                }
+        case SCENE_PACKAGE_DOWNLOAD:
+            if (_appUpdateScene != NULL)
+            {
+                delete _appUpdateScene;
+                _appUpdateScene = NULL;
+            }
 
-                if (_packageSelectScene != NULL) {
-                    delete _packageSelectScene;
-                    _packageSelectScene = NULL;
-                }
-                break;
+            if (_packageSelectScene != NULL)
+            {
+                delete _packageSelectScene;
+                _packageSelectScene = NULL;
+            }
+            break;
 
-            default:
-                /* Do Nothing */
-                break;
+        default:
+            /* Do Nothing */
+            break;
         }
 
         // Load new scenes
-        switch(SceneDirector::currentScene) {
-            case SCENE_EXFAT_WARNING:
-                if (_exFatWarningScene == NULL)
-                    _exFatWarningScene = new ExFatWarningScene();
+        switch (SceneDirector::currentScene)
+        {
+        case SCENE_EXFAT_WARNING:
+            if (_exFatWarningScene == NULL)
+                _exFatWarningScene = new ExFatWarningScene();
 
-                _currentScene = _exFatWarningScene;
-                break;
+            _currentScene = _exFatWarningScene;
+            break;
 
-            case SCENE_APP_UPDATE:
-                if (_appUpdateScene == NULL)
-                    _appUpdateScene = new AppUpdateScene();
-                
-                _currentScene = _appUpdateScene;
-                break;
+        case SCENE_APP_UPDATE:
+            if (_appUpdateScene == NULL)
+                _appUpdateScene = new AppUpdateScene();
 
-            case SCENE_PACKAGE_SELECT:
-                if (_packageSelectScene == NULL)
-                    _packageSelectScene = new PackageSelectScene();
-                
-                _currentScene = _packageSelectScene;
-                break;
+            _currentScene = _appUpdateScene;
+            break;
 
-            case SCENE_PACKAGE_DOWNLOAD:
-                if (_packageDownloadScene == NULL)
-                    _packageDownloadScene = new PackageDownloadScene();
-                
-                _currentScene = _packageDownloadScene;
-                break;
+        case SCENE_PACKAGE_SELECT:
+            if (_packageSelectScene == NULL)
+                _packageSelectScene = new PackageSelectScene();
+
+            _currentScene = _packageSelectScene;
+            break;
+
+        case SCENE_PACKAGE_DOWNLOAD:
+            if (_packageDownloadScene == NULL)
+                _packageDownloadScene = new PackageDownloadScene();
+
+            _currentScene = _packageDownloadScene;
+            break;
         }
 
-        if (modal != NULL) {
+        if (modal != NULL)
+        {
             modal->handleButton(kDown, dTime);
-        } else {
+        }
+        else
+        {
             _currentScene->handleButton(kDown, dTime);
         }
 
         _render(dTime);
-        
+
         return !SceneDirector::exitApp;
     }
 
-    void SceneDirector::render() {
+    void SceneDirector::render()
+    {
         double dTime = _getDeltaTime();
         _render(dTime);
     }
 
-    double SceneDirector::_getDeltaTime() {
+    double SceneDirector::_getDeltaTime()
+    {
         _last = _now;
         _now = SDL_GetPerformanceCounter();
-        return (double) ((_now - _last) * 1000 / SDL_GetPerformanceFrequency());
+        return (double)((_now - _last) * 1000 / SDL_GetPerformanceFrequency());
     }
 
-    void SceneDirector::_render(double dTime) {
+    void SceneDirector::_render(double dTime)
+    {
         AssetManager::setRenderColor(AssetManager::background);
         SDL_RenderClear(SceneDirector::renderer);
 
-        _currentScene->render({ 0, 0, 1280, 720 }, dTime);
+        _currentScene->render({0, 0, 1280, 720}, dTime);
 
-        if (modal != NULL) {
+        if (modal != NULL)
+        {
             // Draw Faded background.
             AssetManager::setRenderColor(AssetManager::modal_faded_background);
-            SDL_Rect fadedBGFrame = { 0, 0, 1280, 720 };
+            SDL_Rect fadedBGFrame = {0, 0, 1280, 720};
             SDL_SetRenderDrawBlendMode(SceneDirector::renderer, SDL_BLENDMODE_BLEND);
             SDL_RenderFillRect(SceneDirector::renderer, &fadedBGFrame);
 
-            modal->render({ 0, 0, 1280, 720 }, dTime);
+            modal->render({0, 0, 1280, 720}, dTime);
         }
 
         SDL_RenderPresent(SceneDirector::renderer);
     }
-}
+} // namespace ku
