@@ -47,9 +47,9 @@ ROMFS		:=	romfs
 APP_TITLE	:=	DeepSea Updater
 APP_AUTHOR	:=	Nichole Mattera
 
-APP_VERSION 		:= 3.1.0
-APP_VERSION_MAJOR	:= 3
-APP_VERSION_MINOR	:= 1
+APP_VERSION 		:= 4.0.0
+APP_VERSION_MAJOR	:= 4
+APP_VERSION_MINOR	:= 0
 APP_VERSION_PATCH	:= 0
 
 SETTING_CONFIG_VERSION	:= 2
@@ -179,6 +179,7 @@ endif
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
+
 all: $(BUILD)
 
 $(BUILD):
@@ -201,8 +202,6 @@ ifeq ($(strip $(APP_JSON)),)
 else
 	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
 endif
-
-
 #---------------------------------------------------------------------------------
 else
 .PHONY:	all
