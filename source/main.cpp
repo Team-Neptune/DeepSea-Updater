@@ -1,4 +1,4 @@
-// Kosmos Updater
+// DeepSea Updater
 // Copyright (C) 2020 Nichole Mattera
 //
 // This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ using namespace swurl;
 int main(int argc, char **argv)
 {
     SessionManager::initialize();
-    SessionManager::userAgent = string("kosmos-updater/") + VERSION;
+    SessionManager::userAgent = string("DeepSea-updater/") + VERSION;
 
     #ifdef DEBUG
         nxlinkStdio();

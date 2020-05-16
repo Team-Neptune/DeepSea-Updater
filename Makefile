@@ -44,7 +44,7 @@ DATA		:=	data
 INCLUDES	:=	include
 ROMFS		:=	romfs
 
-APP_TITLE	:=	Kosmos Updater
+APP_TITLE	:=	DeepSea Updater
 APP_AUTHOR	:=	Nichole Mattera
 
 APP_VERSION 		:= 3.1.0

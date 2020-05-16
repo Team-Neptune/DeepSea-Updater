@@ -1,4 +1,4 @@
-// Kosmos Updater
+// DeepSea Updater
 // Copyright (C) 2020 Nichole Mattera
 //
 // This program is free software; you can redistribute it and/or
@@ -35,10 +35,10 @@ namespace ku::scenes {
         SessionManager::onCompleted = bind(&PackageSelectScene::_onCompleted, this, _1);
         SessionManager::onError = bind(&PackageSelectScene::_onError, this, _1, _2);
 
-        _headerView = new HeaderView("Kosmos Updater", true);
+        _headerView = new HeaderView("DeepSea Updater", true);
         _headerView->frame = { 0, 0, 1280, 88 };
 
-        _updateView = new UpdateView("Checking for updates to Kosmos...");
+        _updateView = new UpdateView("Checking for updates to DeepSea...");
         _updateView->frame.x = 0;
         _updateView->frame.y = 200;
 
@@ -46,7 +46,7 @@ namespace ku::scenes {
         _statusView->frame.x = 0;
         _statusView->frame.y = 323;
 
-        _installRowView = new ListRowView("Install Latest Kosmos", "", SUBTITLE);
+        _installRowView = new ListRowView("Install Latest DeepSea", "", SUBTITLE);
         _installRowView->frame.x = 215;
         _installRowView->frame.y = 137;
         _installRowView->isLast = true;
@@ -58,7 +58,7 @@ namespace ku::scenes {
         vector<string> buttons;
         buttons.push_back("Yes");
         buttons.push_back("No");
-        _ignoreConfigsAlertView = new AlertView("Ignore Config Files?", "Would you like for Kosmos Updater to ignore config\nfiles? This will prevent Kosmos Updater from overwriting\nall config files except for Hekate's main config file.", buttons);
+        _ignoreConfigsAlertView = new AlertView("Ignore Config Files?", "Would you like for DeepSea Updater to ignore config\nfiles? This will prevent DeepSea Updater from overwriting\nall config files except for Hekate's main config file.", buttons);
         _ignoreConfigsAlertView->onDismiss = bind(&PackageSelectScene::_onAlertViewDismiss, this, _1, _2);
 
         addSubView(_headerView);
@@ -86,8 +86,8 @@ namespace ku::scenes {
         if (_footerView != NULL)
             delete _footerView;
 
-        if (_kosmosVersionRequest != NULL)
-            delete _kosmosVersionRequest;
+        if (_DeepSeaVersionRequest != NULL)
+            delete _DeepSeaVersionRequest;
     }
 
     void PackageSelectScene::handleButton(u32 buttons, double dTime) {
@@ -106,10 +106,10 @@ namespace ku::scenes {
     }
 
     void PackageSelectScene::render(SDL_Rect rect, double dTime) {
-        if (_kosmosVersionRequest == NULL) {
-            _kosmosVersionRequest = new WebRequest("https://api.github.com/repos/AtlasNX/Kosmos/releases");
+        if (_DeepSeaVersionRequest == NULL) {
+            _DeepSeaVersionRequest = new WebRequest("https://api.github.com/repos/Team-Neptune/DeepSea/releases");
             SceneDirector::currentSceneDirector->render();
-            SessionManager::makeRequest(_kosmosVersionRequest);
+            SessionManager::makeRequest(_DeepSeaVersionRequest);
         }
 
         Scene::render(rect, dTime);
@@ -127,7 +127,7 @@ namespace ku::scenes {
         _footerView->actions.clear();
     }
 
-    void PackageSelectScene::_showPackageSelectViews(std::string kosmosVersion) {
+    void PackageSelectScene::_showPackageSelectViews(std::string DeepSeaVersion) {
         if (!ConfigManager::getReceivedIgnoreConfigWarning()) {
             _ignoreConfigsAlertView->show();
         }
@@ -139,16 +139,16 @@ namespace ku::scenes {
         _installRowView->hasFocus = true;
 
         string version = ConfigManager::getCurrentVersion();
-        if (version.compare(kosmosVersion) == 0) {
-            _installRowView->setPrimaryText("Reinstall Kosmos");
+        if (version.compare(DeepSeaVersion) == 0) {
+            _installRowView->setPrimaryText("Reinstall DeepSea");
         } else {
-            _installRowView->setPrimaryText("Install Latest Kosmos");
+            _installRowView->setPrimaryText("Install Latest DeepSea");
         }
 
-        if (version == "" || version.compare(kosmosVersion) == 0) {
-            _installRowView->setSecondaryText("Latest Version is " + kosmosVersion);
+        if (version == "" || version.compare(DeepSeaVersion) == 0) {
+            _installRowView->setSecondaryText("Latest Version is " + DeepSeaVersion);
         } else {
-            _installRowView->setSecondaryText("You currently have version " + version + " installed, and the latest version is " + kosmosVersion + ".");
+            _installRowView->setSecondaryText("You currently have version " + version + " installed, and the latest version is " + DeepSeaVersion + ".");
         }
 
         for (auto const& action : _footerView->actions) {
@@ -187,9 +187,9 @@ namespace ku::scenes {
             files.push_back("sdmc:/config/sys-clk/config.ini");
             files.push_back("sdmc:/config/sys-ftpd/config.ini");
             files.push_back("sdmc:/ftpd/config.ini");
-            files.push_back("sdmc:/switch/KosmosToolbox/config.json");
-            files.push_back("sdmc:/switch/KosmosUpdater/internal.db");
-            files.push_back("sdmc:/switch/KosmosUpdater/settings.cfg");
+            files.push_back("sdmc:/switch/DeepSeaToolbox/config.json");
+            files.push_back("sdmc:/switch/DeepSeaUpdater/internal.db");
+            files.push_back("sdmc:/switch/DeepSeaUpdater/settings.cfg");
             ConfigManager::setFilesToIgnore(files);
             ConfigManager::setIgnoreConfigFiles(true);
         }

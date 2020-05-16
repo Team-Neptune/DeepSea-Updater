@@ -1,4 +1,4 @@
-// Kosmos Updater
+// DeepSea Updater
 // Copyright (C) 2020 Nichole Mattera
 //
 // This program is free software; you can redistribute it and/or
@@ -138,8 +138,8 @@ namespace ku {
                 continue;
             }
 
-            // No need to extract Kosmos Updater.
-            if (filename.compare(0, 27, "sdmc:/switch/KosmosUpdater/") == 0) {
+            // No need to extract DeepSea Updater.
+            if (filename.compare(0, 27, "sdmc:/switch/DeepSeaUpdater/") == 0) {
                 free(fileInfo);
                 continue;
             }

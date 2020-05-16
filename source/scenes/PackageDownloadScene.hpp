@@ -1,4 +1,4 @@
-// Kosmos Updater
+// DeepSea Updater
 // Copyright (C) 2020 Nichole Mattera
 //
 // This program is free software; you can redistribute it and/or
@@ -44,10 +44,10 @@ namespace ku::scenes {
             ku::views::FooterView * _footerView = NULL;
             ku::views::AlertView * _restartAlertView = NULL;
 
-            std::string _kosmosVersion = "";
+            std::string _DeepSeaVersion = "";
 
-            swurl::WebRequest * _kosmosUrlRequest = NULL;
-            swurl::WebRequest * _kosmosRequest = NULL;
+            swurl::WebRequest * _DeepSeaUrlRequest = NULL;
+            swurl::WebRequest * _DeepSeaRequest = NULL;
 
             void _showStatus(std::string text, std::string subtext, bool wasSuccessful);
             void _onAlertViewDismiss(ku::ModalView * view, bool success);

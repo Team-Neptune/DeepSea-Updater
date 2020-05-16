@@ -1,4 +1,4 @@
-// Kosmos Updater
+// DeepSea Updater
 // Copyright (C) 2020 Nichole Mattera
 //
 // This program is free software; you can redistribute it and/or
@@ -40,10 +40,10 @@ namespace ku::scenes {
 
         bpcInitialize();
         
-        _headerView = new HeaderView("Kosmos Updater", true);
+        _headerView = new HeaderView("DeepSea Updater", true);
         _headerView->frame = { 0, 0, 1280, 88 };
 
-        _updateView = new UpdateView("Downloading the latest Kosmos...");
+        _updateView = new UpdateView("Downloading the latest DeepSea...");
         _updateView->frame.x = 0;
         _updateView->frame.y = 200;
 
@@ -80,11 +80,11 @@ namespace ku::scenes {
         if (_footerView != NULL)
             delete _footerView;
 
-        if (_kosmosUrlRequest != NULL)
-            delete _kosmosUrlRequest;
+        if (_DeepSeaUrlRequest != NULL)
+            delete _DeepSeaUrlRequest;
 
-        if (_kosmosRequest != NULL)
-            delete _kosmosRequest;
+        if (_DeepSeaRequest != NULL)
+            delete _DeepSeaRequest;
 
         bpcExit();
     }
@@ -101,9 +101,9 @@ namespace ku::scenes {
     }
 
     void PackageDownloadScene::render(SDL_Rect rect, double dTime) {
-        if (_kosmosUrlRequest == NULL) {
-            _kosmosUrlRequest = new WebRequest("https://api.github.com/repos/AtlasNX/Kosmos/releases");
-            SessionManager::makeRequest(_kosmosUrlRequest);
+        if (_DeepSeaUrlRequest == NULL) {
+            _DeepSeaUrlRequest = new WebRequest("https://api.github.com/repos/Team-Neptune/DeepSea/releases");
+            SessionManager::makeRequest(_DeepSeaUrlRequest);
         }
 
         Scene::render(rect, dTime);
@@ -139,7 +139,7 @@ namespace ku::scenes {
     }
 
     void PackageDownloadScene::_onCompleted(WebRequest * request) {
-        if (request == _kosmosUrlRequest) {
+        if (request == _DeepSeaUrlRequest) {
             json_t * root = json_loads(request->response.rawResponseBody.c_str(), 0, NULL);
             if (!root || !json_is_array(root) || json_array_size(root) < 1) {
                 if (root) {
@@ -164,7 +164,7 @@ namespace ku::scenes {
                 return;
             }
 
-            _kosmosVersion = json_string_value(tagName);
+            _DeepSeaVersion = json_string_value(tagName);
 
             json_t * assets = json_object_get(release, "assets");
             if (!assets || !json_is_array(assets) || json_array_size(assets) < 1) {
@@ -186,7 +186,7 @@ namespace ku::scenes {
                 }
 
                 std::string assetName(json_string_value(name));
-                if (assetName.compare(0, 6, "Kosmos") != 0 || assetName.compare(assetName.length() - 4, 4, ".zip") != 0) {
+                if (assetName.compare(0, 6, "DeepSea") != 0 || assetName.compare(assetName.length() - 4, 4, ".zip") != 0) {
                     continue;
                 }
 
@@ -206,8 +206,8 @@ namespace ku::scenes {
                 return;
             }
 
-            _kosmosRequest = new WebRequest(downloadUrl);
-            SessionManager::makeRequest(_kosmosRequest);
+            _DeepSeaRequest = new WebRequest(downloadUrl);
+            SessionManager::makeRequest(_DeepSeaRequest);
         } else {
             FileManager::writeFile("temp.zip", request->response.rawResponseBody);
 
@@ -227,14 +227,14 @@ namespace ku::scenes {
             }
 
             FileManager::deleteFile("temp.zip");
-            ConfigManager::setCurrentVersion(_kosmosVersion);
+            ConfigManager::setCurrentVersion(_DeepSeaVersion);
 
             _updateView->setText("Applying disabled game cart option...");
             SceneDirector::currentSceneDirector->render();
 
             FileManager::applyNoGC();
 
-            _showStatus("Kosmos has been updated to version " + _kosmosVersion + "!", "Please restart your Switch to finish the update.", true);
+            _showStatus("DeepSea has been updated to version " + _DeepSeaVersion + "!", "Please restart your Switch to finish the update.", true);
         }
     }
 
