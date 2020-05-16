@@ -146,21 +146,21 @@ namespace ku::scenes {
                     json_decref(root);
                 }
 
-                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.", false);
+                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[7]", false);
                 return;
             }
 
             json_t * release = json_array_get(root, 0);
             if (!release || !json_is_object(release)) {
                 json_decref(root);
-                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.", false);
+                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[8]", false);
                 return;
             }
 
             json_t * tagName = json_object_get(release, "tag_name");
             if (!tagName || !json_is_string(tagName)) {
                 json_decref(root);
-                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.", false);
+                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[9]", false);
                 return;
             }
 
@@ -169,7 +169,7 @@ namespace ku::scenes {
             json_t * assets = json_object_get(release, "assets");
             if (!assets || !json_is_array(assets) || json_array_size(assets) < 1) {
                 json_decref(root);
-                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.", false);
+                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[10]", false);
                 return;
             }
 
@@ -186,7 +186,7 @@ namespace ku::scenes {
                 }
 
                 std::string assetName(json_string_value(name));
-                if (assetName.compare(0, 6, "DeepSea") != 0 || assetName.compare(assetName.length() - 4, 4, ".zip") != 0) {
+                if (assetName.compare(0, 8, "deepsea_") != 0 || assetName.compare(assetName.length() - 4, 4, ".zip") != 0) {
                     continue;
                 }
 
