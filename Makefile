@@ -45,7 +45,7 @@ INCLUDES	:=	include
 ROMFS		:=	romfs
 
 APP_TITLE	:=	DeepSea Updater
-APP_AUTHOR	:=	Nichole Mattera
+APP_AUTHOR	:=	FennecTECH,Nichole Mattera
 
 APP_VERSION 		:= 4.0.0
 APP_VERSION_MAJOR	:= 4
