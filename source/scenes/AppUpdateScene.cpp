@@ -1,4 +1,4 @@
-// Kosmos Updater
+// DeepSea Updater
 // Copyright (C) 2020 Nichole Mattera
 //
 // This program is free software; you can redistribute it and/or
@@ -36,10 +36,10 @@ namespace ku::scenes {
         SessionManager::onCompleted = bind(&AppUpdateScene::_onCompleted, this, _1);
         SessionManager::onError = bind(&AppUpdateScene::_onError, this, _1, _2);
 
-        _headerView = new HeaderView("Kosmos Updater", true);
+        _headerView = new HeaderView("DeepSea Updater", true);
         _headerView->frame = { 0, 0, 1280, 88 };
 
-        _updateView = new UpdateView("Checking for updates to Kosmos Updater...");
+        _updateView = new UpdateView("Checking for updates to DeepSea Updater...");
         _updateView->frame.x = 0;
         _updateView->frame.y = 200;
 
@@ -85,7 +85,7 @@ namespace ku::scenes {
 
     void AppUpdateScene::render(SDL_Rect rect, double dTime) {
         if (_appVersionRequest == NULL) {
-            _appVersionRequest = new WebRequest("https://api.github.com/repos/AtlasNX/Kosmos-Updater/releases");
+            _appVersionRequest = new WebRequest("https://api.github.com/repos/Team-Neptune/DeepSea-Updater/releases");
             SessionManager::makeRequest(_appVersionRequest);
         }
 
@@ -232,15 +232,15 @@ namespace ku::scenes {
                 }
 
                 _updateView->setProgress(0);
-                _updateView->setText("Getting the latest version of Kosmos Updater...");
+                _updateView->setText("Getting the latest version of DeepSea Updater...");
 
                 _appRequest = new WebRequest(downloadUrl);
                 SessionManager::makeRequest(_appRequest);
             }
         } else if (request == _appRequest) {
             romfsExit();
-            FileManager::writeFile("KosmosUpdater.nro", request->response.rawResponseBody);
-            _showStatus("Kosmos Updater has been updated to version " + _appVersionRequest->response.rawResponseBody + "!", "Please restart the app.");
+            FileManager::writeFile("DeepSeaUpdater.nro", request->response.rawResponseBody);
+            _showStatus("DeepSea Updater has been updated to version " + _appVersionRequest->response.rawResponseBody + "!", "Please restart the app.");
         }
     }
 
