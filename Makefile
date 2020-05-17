@@ -45,11 +45,11 @@ INCLUDES	:=	include
 ROMFS		:=	romfs
 
 APP_TITLE	:=	DeepSea Updater
-APP_AUTHOR	:=	Nichole Mattera
+APP_AUTHOR	:=	FennecTECH,Nichole Mattera
 
-APP_VERSION 		:= 3.1.0
-APP_VERSION_MAJOR	:= 3
-APP_VERSION_MINOR	:= 1
+APP_VERSION 		:= 4.0.0
+APP_VERSION_MAJOR	:= 4
+APP_VERSION_MINOR	:= 0
 APP_VERSION_PATCH	:= 0
 
 SETTING_CONFIG_VERSION	:= 2
@@ -78,9 +78,8 @@ LDFLAGS		=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) \
 				-Wl,-Map,$(notdir $*.map)
 
 LIBS		:=	-lSDL2_ttf -lSDL2_image -lSDL2_gfx -lfreetype -lwebp -lpng -ljpeg \
-				-ljansson -lSwurl -lcurl -lz -lmbedtls -lmbedcrypto -lmbedx509 \
-				-lSimpleIniParser -lminizip -lconfig -lnx `sdl2-config --libs` \
-				`freetype-config --libs`
+				-ljansson -lSwurl -lcurl -lz -lSimpleIniParser -lminizip -lconfig \
+				-lnx `sdl2-config --libs` `freetype-config --libs`
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -96,7 +95,7 @@ LIBDIRS	:= $(PORTLIBS) $(LIBNX) $(CURDIR)/SimpleIniParser $(CURDIR)/Swurl
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 #---------------------------------------------------------------------------------
 
-export OUTPUT	:=	$(CURDIR)/$(TARGET)
+export OUTPUT	:=	$(CURDIR)/DeepSeaUpdater  #This is where we decide what the outut will be named
 export TOPDIR	:=	$(CURDIR)
 
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
@@ -179,6 +178,7 @@ endif
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
+
 all: $(BUILD)
 
 $(BUILD):
@@ -201,8 +201,6 @@ ifeq ($(strip $(APP_JSON)),)
 else
 	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
 endif
-
-
 #---------------------------------------------------------------------------------
 else
 .PHONY:	all

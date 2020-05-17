@@ -157,19 +157,19 @@ namespace ku::scenes {
         if (request == _appVersionRequest) {
             json_t * root = json_loads(request->response.rawResponseBody.c_str(), 0, NULL);
             if (!root || !json_is_array(root) || json_array_size(root) < 1) {
-                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.");
+                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[4]");
                 return;
             }
 
             json_t * release = json_array_get(root, 0);
             if (!release || !json_is_object(release)) {
-                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.");
+                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[5]");
                 return;
             }
 
             json_t * tagName = json_object_get(release, "tag_name");
             if (!tagName || !json_is_string(tagName)) {
-                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.");
+                _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[6]");
                 return;
             }
 
