@@ -30,14 +30,16 @@ using namespace std;
 using namespace std::placeholders;
 using namespace swurl;
 
-namespace ku::scenes {
-    AppUpdateScene::AppUpdateScene() {
+namespace ku::scenes
+{
+    AppUpdateScene::AppUpdateScene()
+    {
         SessionManager::onProgressChanged = bind(&AppUpdateScene::_onProgressUpdate, this, _1, _2);
         SessionManager::onCompleted = bind(&AppUpdateScene::_onCompleted, this, _1);
         SessionManager::onError = bind(&AppUpdateScene::_onError, this, _1, _2);
 
         _headerView = new HeaderView("DeepSea Updater", true);
-        _headerView->frame = { 0, 0, 1280, 88 };
+        _headerView->frame = {0, 0, 1280, 88};
 
         _updateView = new UpdateView("Checking for updates to DeepSea Updater...");
         _updateView->frame.x = 0;
@@ -49,7 +51,7 @@ namespace ku::scenes {
         _statusView->hidden = true;
 
         _footerView = new FooterView();
-        _footerView->frame = { 0, 647, 1280, 73 };
+        _footerView->frame = {0, 647, 1280, 73};
 
         addSubView(_headerView);
         addSubView(_updateView);
@@ -57,7 +59,8 @@ namespace ku::scenes {
         addSubView(_footerView);
     }
 
-    AppUpdateScene::~AppUpdateScene() {
+    AppUpdateScene::~AppUpdateScene()
+    {
         if (_headerView != NULL)
             delete _headerView;
 
@@ -77,14 +80,18 @@ namespace ku::scenes {
             delete _appRequest;
     }
 
-    void AppUpdateScene::handleButton(u32 buttons, double dTime) {
-        if (!_statusView->hidden && buttons & KEY_A) {
+    void AppUpdateScene::handleButton(u32 buttons, double dTime)
+    {
+        if (!_statusView->hidden && buttons & KEY_A)
+        {
             SceneDirector::exitApp = true;
         }
     }
 
-    void AppUpdateScene::render(SDL_Rect rect, double dTime) {
-        if (_appVersionRequest == NULL) {
+    void AppUpdateScene::render(SDL_Rect rect, double dTime)
+    {
+        if (_appVersionRequest == NULL)
+        {
             _appVersionRequest = new WebRequest("https://api.github.com/repos/Team-Neptune/DeepSea-Updater/releases");
             SessionManager::makeRequest(_appVersionRequest);
         }
@@ -93,7 +100,8 @@ namespace ku::scenes {
         Scene::render(rect, dTime);
     }
 
-    void AppUpdateScene::_showStatus(string text, string subtext) {
+    void AppUpdateScene::_showStatus(string text, string subtext)
+    {
         _statusView->setText(text);
         _statusView->setSubtext(subtext);
 
@@ -103,11 +111,14 @@ namespace ku::scenes {
         _footerView->actions.push_back(new Action(A_BUTTON, "Quit"));
     }
 
-    std::string AppUpdateScene::_sanitizeVersion(std::string version) {
+    std::string AppUpdateScene::_sanitizeVersion(std::string version)
+    {
         std::string result = "";
 
-        for (char& c : version) {
-            if ((c >= '0' && c <= '9') || c == '.') {
+        for (char &c : version)
+        {
+            if ((c >= '0' && c <= '9') || c == '.')
+            {
                 result += c;
             }
         }
@@ -115,27 +126,37 @@ namespace ku::scenes {
         return result;
     }
 
-    tuple<int, int, int> AppUpdateScene::_parseVersion(string version) {
+    tuple<int, int, int> AppUpdateScene::_parseVersion(string version)
+    {
         size_t pos = 0;
         int index = 0, major = 0, minor = 0, patch = 0;
 
-        while (pos != string::npos) {
+        while (pos != string::npos)
+        {
             size_t end_pos = version.find(".", pos);
 
             int versionNumber = 0;
-            if (end_pos == string::npos) {
+            if (end_pos == string::npos)
+            {
                 versionNumber = stoi(version.substr(pos, string::npos));
                 pos = string::npos;
-            } else {
+            }
+            else
+            {
                 versionNumber = stoi(version.substr(pos, end_pos - pos));
                 pos = end_pos + 1;
             }
 
-            if (index == 0) {
+            if (index == 0)
+            {
                 major = versionNumber;
-            } else if (index == 1) {
+            }
+            else if (index == 1)
+            {
                 minor = versionNumber;
-            } else if (index == 2) {
+            }
+            else if (index == 2)
+            {
                 patch = versionNumber;
                 break;
             }
@@ -148,27 +169,33 @@ namespace ku::scenes {
 
     // Swurl Callback Methods
 
-    void AppUpdateScene::_onProgressUpdate(WebRequest * request, double progress) {
+    void AppUpdateScene::_onProgressUpdate(WebRequest *request, double progress)
+    {
         _downloadProgess = progress;
         SceneDirector::currentSceneDirector->render();
     }
 
-    void AppUpdateScene::_onCompleted(WebRequest * request) {
-        if (request == _appVersionRequest) {
-            json_t * root = json_loads(request->response.rawResponseBody.c_str(), 0, NULL);
-            if (!root || !json_is_array(root) || json_array_size(root) < 1) {
+    void AppUpdateScene::_onCompleted(WebRequest *request)
+    {
+        if (request == _appVersionRequest)
+        {
+            json_t *root = json_loads(request->response.rawResponseBody.c_str(), 0, NULL);
+            if (!root || !json_is_array(root) || json_array_size(root) < 1)
+            {
                 _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[4]");
                 return;
             }
 
-            json_t * release = json_array_get(root, 0);
-            if (!release || !json_is_object(release)) {
+            json_t *release = json_array_get(root, 0);
+            if (!release || !json_is_object(release))
+            {
                 _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[5]");
                 return;
             }
 
-            json_t * tagName = json_object_get(release, "tag_name");
-            if (!tagName || !json_is_string(tagName)) {
+            json_t *tagName = json_object_get(release, "tag_name");
+            if (!tagName || !json_is_string(tagName))
+            {
                 _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.[6]");
                 return;
             }
@@ -180,8 +207,8 @@ namespace ku::scenes {
                 VERSION_MAJOR > get<0>(latestVersion) ||
                 (VERSION_MAJOR == get<0>(latestVersion) && VERSION_MINOR > get<1>(latestVersion)) ||
                 (VERSION_MAJOR == get<0>(latestVersion) && VERSION_MINOR == get<1>(latestVersion) && VERSION_PATCH > get<2>(latestVersion)) ||
-                (VERSION_MAJOR == get<0>(latestVersion) && VERSION_MINOR == get<1>(latestVersion) && VERSION_PATCH == get<2>(latestVersion))
-            ) {
+                (VERSION_MAJOR == get<0>(latestVersion) && VERSION_MINOR == get<1>(latestVersion) && VERSION_PATCH == get<2>(latestVersion)))
+            {
                 json_decref(root);
 
                 SessionManager::onProgressChanged = NULL;
@@ -191,32 +218,39 @@ namespace ku::scenes {
                 SceneDirector::currentScene = SCENE_PACKAGE_SELECT;
             }
             // Update
-            else {
-                json_t * assets = json_object_get(release, "assets");
-                if (!assets || !json_is_array(assets) || json_array_size(assets) < 1) {
+            else
+            {
+                json_t *assets = json_object_get(release, "assets");
+                if (!assets || !json_is_array(assets) || json_array_size(assets) < 1)
+                {
                     _showStatus("Unable to parse response from GitHub API.", "Please restart the app to try again.");
                     return;
                 }
 
                 std::string downloadUrl = "";
-                for(size_t i = 0; i < json_array_size(assets); i++) {
-                    json_t * asset = json_array_get(assets, i);
-                    if (!asset || !json_is_object(asset)) {
+                for (size_t i = 0; i < json_array_size(assets); i++)
+                {
+                    json_t *asset = json_array_get(assets, i);
+                    if (!asset || !json_is_object(asset))
+                    {
                         continue;
                     }
 
-                    json_t * name = json_object_get(asset, "name");
-                    if (!name || !json_is_string(name)) {
+                    json_t *name = json_object_get(asset, "name");
+                    if (!name || !json_is_string(name))
+                    {
                         continue;
                     }
 
                     std::string assetName(json_string_value(name));
-                    if (assetName.compare(assetName.length() - 4, 4, ".nro") != 0) {
+                    if (assetName.compare(assetName.length() - 4, 4, ".nro") != 0)
+                    {
                         continue;
                     }
 
-                    json_t * browserDownloadUrl = json_object_get(asset, "browser_download_url");
-                    if (!browserDownloadUrl || !json_is_string(browserDownloadUrl)) {
+                    json_t *browserDownloadUrl = json_object_get(asset, "browser_download_url");
+                    if (!browserDownloadUrl || !json_is_string(browserDownloadUrl))
+                    {
                         continue;
                     }
 
@@ -226,7 +260,8 @@ namespace ku::scenes {
 
                 json_decref(root);
 
-                if (downloadUrl.length() == 0) {
+                if (downloadUrl.length() == 0)
+                {
                     _showStatus("Unable to find the latest release assets.", "Please restart the app to try again.");
                     return;
                 }
@@ -237,14 +272,17 @@ namespace ku::scenes {
                 _appRequest = new WebRequest(downloadUrl);
                 SessionManager::makeRequest(_appRequest);
             }
-        } else if (request == _appRequest) {
+        }
+        else if (request == _appRequest)
+        {
             romfsExit();
-            FileManager::writeFile("DeepSeaUpdater.nro", request->response.rawResponseBody);
+            FileManager::writeFile("DeepSea-Updater.nro", request->response.rawResponseBody);
             _showStatus("DeepSea Updater has been updated to version " + _appVersionRequest->response.rawResponseBody + "!", "Please restart the app.");
         }
     }
 
-    void AppUpdateScene::_onError(WebRequest * request, string error) {
+    void AppUpdateScene::_onError(WebRequest *request, string error)
+    {
         _showStatus(error, "Please restart the app to try again.");
     }
-}
+} // namespace ku::scenes

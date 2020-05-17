@@ -31,11 +31,13 @@
 using namespace simpleIniParser;
 using namespace std;
 
-namespace ku {
-    std::vector<char> FileManager::readFile(std::string path) {
+namespace ku
+{
+    std::vector<char> FileManager::readFile(std::string path)
+    {
         std::ifstream file;
         file.open(path, std::ios::in | std::ios::binary | std::ios::ate);
-        
+
         auto size = file.tellg();
         file.seekg(0, std::ios::beg);
 
@@ -46,11 +48,13 @@ namespace ku {
         return buffer;
     }
 
-    bool FileManager::writeFile(string filename, string data) {
+    bool FileManager::writeFile(string filename, string data)
+    {
         deleteFile(filename);
 
-        FILE * file = fopen(filename.c_str(), "wb");
-        if (!file) {
+        FILE *file = fopen(filename.c_str(), "wb");
+        if (!file)
+        {
             return false;
         }
 
@@ -63,18 +67,22 @@ namespace ku {
         return (result == data.size());
     }
 
-    bool FileManager::deleteFile(string filename) {
-        if (fileExists(filename)) {
+    bool FileManager::deleteFile(string filename)
+    {
+        if (fileExists(filename))
+        {
             return remove(filename.c_str()) == 0;
         }
 
         return false;
     }
 
-    bool FileManager::fileExists(string filename) {
-        FILE * file = fopen(filename.c_str(), "r");
+    bool FileManager::fileExists(string filename)
+    {
+        FILE *file = fopen(filename.c_str(), "r");
 
-        if (file) {
+        if (file)
+        {
             fflush(file);
             fsync(fileno(file));
             fclose(file);
@@ -85,85 +93,99 @@ namespace ku {
     }
 
     // http://stackoverflow.com/a/11366985
-    bool FileManager::createSubfolder(string path) {
+    bool FileManager::createSubfolder(string path)
+    {
         bool bSuccess = false;
         int nRC = ::mkdir(path.c_str(), 0775);
-        if(nRC == -1)
+        if (nRC == -1)
         {
-            switch(errno)
+            switch (errno)
             {
-                case ENOENT:
-                    //parent didn't exist, try to create it
-                    if(createSubfolder(path.substr(0, path.find_last_of('/'))))
-                        //Now, try to create again.
-                        bSuccess = 0 == ::mkdir(path.c_str(), 0775);
-                    else
-                        bSuccess = false;
-                    break;
-                case EEXIST:
-                    //Done!
-                    bSuccess = true;
-                    break;
-                default:
+            case ENOENT:
+                //parent didn't exist, try to create it
+                if (createSubfolder(path.substr(0, path.find_last_of('/'))))
+                    //Now, try to create again.
+                    bSuccess = 0 == ::mkdir(path.c_str(), 0775);
+                else
                     bSuccess = false;
-                    break;
+                break;
+            case EEXIST:
+                //Done!
+                bSuccess = true;
+                break;
+            default:
+                bSuccess = false;
+                break;
             }
         }
         else
             bSuccess = true;
-        
+
         return bSuccess;
     }
 
-    bool FileManager::extract(string zipFilename, string destination) {
+    bool FileManager::extract(string zipFilename, string destination)
+    {
         unzFile unz = unzOpen(zipFilename.c_str());
         vector<string> filesToIgnore = ConfigManager::getFilesToIgnore();
         vector<string> filesInstalled = ConfigManager::getInstalledFiles();
-        
+
         int i = 0;
-        for (;;) {
+        for (;;)
+        {
             int code;
-            if (i == 0) {
+            if (i == 0)
+            {
                 code = unzGoToFirstFile(unz);
-            } else {
+            }
+            else
+            {
                 code = unzGoToNextFile(unz);
             }
             i++;
 
-            if (code == UNZ_END_OF_LIST_OF_FILE) {
+            if (code == UNZ_END_OF_LIST_OF_FILE)
+            {
                 break;
-            } else {
+            }
+            else
+            {
                 unz_file_pos pos;
                 unzGetFilePos(unz, &pos);
             }
 
-            unz_file_info_s * fileInfo = _getFileInfo(unz);
+            unz_file_info_s *fileInfo = _getFileInfo(unz);
 
             string filename = destination;
             filename += _getFullFileName(unz, fileInfo);
 
-            if (find(begin(filesToIgnore), end(filesToIgnore), filename) != end(filesToIgnore)) {
+            if (find(begin(filesToIgnore), end(filesToIgnore), filename) != end(filesToIgnore))
+            {
                 free(fileInfo);
                 continue;
             }
 
             // No need to extract Hekate's payload.
-            if (filename.compare(0, 12, "sdmc:/hekate") == 0 && filename.compare(filename.length() - 4, 4, ".bin") == 0) {
+            if (filename.compare(0, 12, "sdmc:/hekate") == 0 && filename.compare(filename.length() - 4, 4, ".bin") == 0)
+            {
                 free(fileInfo);
                 continue;
             }
 
             // No need to extract DeepSea Updater.
-            if (filename.compare(0, 27, "sdmc:/switch/DeepSeaUpdater/") == 0) {
+            if (filename.compare(0, 28, "sdmc:/switch/DeepSea-Updater/") == 0)
+            {
                 free(fileInfo);
                 continue;
             }
 
-            if (filename.back() != '/') {
+            if (filename.back() != '/')
+            {
                 filesInstalled.push_back(filename);
 
                 int result = _extractFile(filename.c_str(), unz, fileInfo);
-                if (result < 0) {
+                if (result < 0)
+                {
                     free(fileInfo);
                     unzClose(unz);
                     return false;
@@ -173,7 +195,8 @@ namespace ku {
             free(fileInfo);
         }
 
-        if (i <= 0) {
+        if (i <= 0)
+        {
             unzClose(unz);
             return false;
         }
@@ -183,12 +206,15 @@ namespace ku {
         return true;
     }
 
-    void FileManager::cleanUpFiles() {
+    void FileManager::cleanUpFiles()
+    {
         vector<string> installedFiles = ConfigManager::getInstalledFiles();
         vector<string> filesToIgnore = ConfigManager::getFilesToIgnore();
 
-        for (auto const& fileName : installedFiles) {
-            if (find(begin(filesToIgnore), end(filesToIgnore), fileName) != end(filesToIgnore)) {
+        for (auto const &fileName : installedFiles)
+        {
+            if (find(begin(filesToIgnore), end(filesToIgnore), fileName) != end(filesToIgnore))
+            {
                 continue;
             }
 
@@ -199,23 +225,29 @@ namespace ku {
         ConfigManager::setInstalledFiles(blankVector);
     }
 
-    void FileManager::applyNoGC() {
-        Ini * ini = Ini::parseFile(HEKATE_FILE);
-        for (auto const& section : ini->sections) {
+    void FileManager::applyNoGC()
+    {
+        Ini *ini = Ini::parseFile(HEKATE_FILE);
+        for (auto const &section : ini->sections)
+        {
             if (section->type != IniSectionType::Section)
                 continue;
 
-            if (section->value == "config") {
+            if (section->value == "config")
+            {
                 bool patchApplied = false;
-                for (auto const& option : section->options) {
-                    if (option->key == "autonogc") {
+                for (auto const &option : section->options)
+                {
+                    if (option->key == "autonogc")
+                    {
                         option->value = "1";
                         patchApplied = true;
                         break;
                     }
                 }
 
-                if (!patchApplied) {
+                if (!patchApplied)
+                {
                     section->options.push_back(new IniOption(IniOptionType::Option, "autonogc", "1"));
                 }
 
@@ -227,18 +259,20 @@ namespace ku {
         delete ini;
     }
 
-    unz_file_info_s * FileManager::_getFileInfo(unzFile unz) {
-        unz_file_info_s * fileInfo = (unz_file_info_s*) malloc(sizeof(unz_file_info_s));
+    unz_file_info_s *FileManager::_getFileInfo(unzFile unz)
+    {
+        unz_file_info_s *fileInfo = (unz_file_info_s *)malloc(sizeof(unz_file_info_s));
         unzGetCurrentFileInfo(unz, fileInfo, NULL, 0, NULL, 0, NULL, 0);
         return fileInfo;
     }
 
-    string FileManager::_getFullFileName(unzFile unz, unz_file_info_s * fileInfo) {
+    string FileManager::_getFullFileName(unzFile unz, unz_file_info_s *fileInfo)
+    {
         char filePath[fileInfo->size_filename + 1];
-        
+
         unzGetCurrentFileInfo(unz, fileInfo, filePath, fileInfo->size_filename, NULL, 0, NULL, 0);
         filePath[fileInfo->size_filename] = '\0';
-        
+
         string path(filePath);
         path.resize(fileInfo->size_filename);
 
@@ -249,82 +283,88 @@ namespace ku {
     {
         bool bSuccess = false;
         int nRC = ::mkdir(path.c_str(), 0775);
-        if(nRC == -1)
+        if (nRC == -1)
         {
-            switch(errno)
+            switch (errno)
             {
-                case ENOENT:
-                    //parent didn't exist, try to create it
-                    if( _makeDirectoryParents(path.substr(0, path.find_last_of('/'))))
-                        //Now, try to create again.
-                        bSuccess = 0 == ::mkdir(path.c_str(), 0775);
-                    else
-                        bSuccess = false;
-                    break;
-                case EEXIST:
-                    //Done!
-                    bSuccess = true;
-                    break;
-                default:
+            case ENOENT:
+                //parent didn't exist, try to create it
+                if (_makeDirectoryParents(path.substr(0, path.find_last_of('/'))))
+                    //Now, try to create again.
+                    bSuccess = 0 == ::mkdir(path.c_str(), 0775);
+                else
                     bSuccess = false;
-                    break;
+                break;
+            case EEXIST:
+                //Done!
+                bSuccess = true;
+                break;
+            default:
+                bSuccess = false;
+                break;
             }
         }
         else
             bSuccess = true;
-        
+
         return bSuccess;
     }
 
-    int FileManager::_extractFile(const char * path, unzFile unz, unz_file_info_s * fileInfo) {
+    int FileManager::_extractFile(const char *path, unzFile unz, unz_file_info_s *fileInfo)
+    {
         //check to make sure filepath or fileInfo isnt null
         if (path == NULL || fileInfo == NULL)
             return -1;
-            
+
         if (unzOpenCurrentFile(unz) != UNZ_OK)
             return -2;
-        
+
         char folderPath[strlen(path) + 1];
         strcpy(folderPath, path);
-        char * pos = strrchr(folderPath, '/');
-        if (pos != NULL) {
+        char *pos = strrchr(folderPath, '/');
+        if (pos != NULL)
+        {
             *pos = '\0';
             _makeDirectoryParents(string(folderPath));
         }
-        
+
         u32 blocksize = 0x8000;
-        u8 * buffer = (u8*) malloc(blocksize);
+        u8 *buffer = (u8 *)malloc(blocksize);
         if (buffer == NULL)
             return -3;
         u32 done = 0;
         int writeBytes = 0;
-        FILE * fp = fopen(path, "w");
-        if (fp == NULL) {
+        FILE *fp = fopen(path, "w");
+        if (fp == NULL)
+        {
             free(buffer);
-            return -4;		
+            return -4;
         }
-            
-        while (done < fileInfo->uncompressed_size) {
-            if (done + blocksize > fileInfo->uncompressed_size) {
+
+        while (done < fileInfo->uncompressed_size)
+        {
+            if (done + blocksize > fileInfo->uncompressed_size)
+            {
                 blocksize = fileInfo->uncompressed_size - done;
             }
             unzReadCurrentFile(unz, buffer, blocksize);
             writeBytes = write(fileno(fp), buffer, blocksize);
-            if (writeBytes <= 0) {
+            if (writeBytes <= 0)
+            {
                 break;
             }
             done += writeBytes;
         }
-        
+
         fflush(fp);
         fsync(fileno(fp));
         fclose(fp);
-        
+
         free(buffer);
         if (done != fileInfo->uncompressed_size)
-            return -4;		
-        
+            return -4;
+
         unzCloseCurrentFile(unz);
         return 0;
     }
-}
+} // namespace ku
