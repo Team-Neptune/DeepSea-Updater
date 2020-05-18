@@ -204,14 +204,17 @@ namespace ku::scenes
         if (success && _ignoreConfigsAlertView->getSelectedOption() == 0)
         {
             vector<string> files;
-            files.push_back("sdmc:/atmosphere/BCT.ini");
-            files.push_back("sdmc:/atmosphere/loader.ini");
-            files.push_back("sdmc:/atmosphere/system_settings.ini");
+            files.push_back("sdmc:/atmosphere/config/BCT.ini");
+            files.push_back("sdmc:/atmosphere/config/override_config.ini");
+            files.push_back("sdmc:/atmosphere/config/system_settings.ini");
             files.push_back("sdmc:/bootloader/patches.ini");
+            files.push_back("sdmc:/bootloader/hekate_ipl.ini")
             files.push_back("sdmc:/config/hid_mitm/config.ini");
             files.push_back("sdmc:/config/sys-clk/config.ini");
             files.push_back("sdmc:/config/sys-ftpd/config.ini");
-            files.push_back("sdmc:/ftpd/config.ini");
+            files.push_back("sdmc:/config/sys-screenuploader/config.ini")
+            files.push_back("sdmc:/config/nx-hbmenu/settings.cfg")
+            files.push_back("sdmc:/config/hid_mitm/config.ini")
             files.push_back("sdmc:/switch/DeepSea-Toolbox/config.json");
             files.push_back("sdmc:/switch/DeepSea-Updater/internal.db");
             files.push_back("sdmc:/switch/DeepSea-Updater/settings.cfg");
