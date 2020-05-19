@@ -47,9 +47,9 @@ ROMFS		:=	romfs
 APP_TITLE	:=	DeepSea Updater
 APP_AUTHOR	:=	FennecTECH,Nichole Mattera
 
-APP_VERSION 		:= 4.0.0
+APP_VERSION 		:= 4.1.0
 APP_VERSION_MAJOR	:= 4
-APP_VERSION_MINOR	:= 0
+APP_VERSION_MINOR	:= 1
 APP_VERSION_PATCH	:= 0
 
 SETTING_CONFIG_VERSION	:= 2
@@ -95,7 +95,7 @@ LIBDIRS	:= $(PORTLIBS) $(LIBNX) $(CURDIR)/SimpleIniParser $(CURDIR)/Swurl
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 #---------------------------------------------------------------------------------
 
-export OUTPUT	:=	$(CURDIR)/DeepSeaUpdater  #This is where we decide what the outut will be named
+export OUTPUT	:=	$(CURDIR)/$(TARGET)
 export TOPDIR	:=	$(CURDIR)
 
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
