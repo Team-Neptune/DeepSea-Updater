@@ -6,7 +6,6 @@ A homebrew application for the Nintendo Switch that will automatically update yo
 
 | Config option                                                               | Description
 | --------------------------------------------------------------------------- | ---
-| `host = "http://DeepSea-updater.Team-Neptune.com";`                           | Which server to connect to. You can host your own server using the files in the [server repository](https://github.com/Team-Neptune/DeepSea-Updater-Server).
 | `ignore = [ "sdmc://fileToIgnore.nro", "sdmc://anotherFileToIgnore.nro" ];` | Array of files to ignore when extracting.
 | `autoupdate = true;`                                                        | Whether or not to auto update DeepSea Updater.
 | `proxy_enabled = false;`                                                    | Whether or not to use a proxy for network calls.
