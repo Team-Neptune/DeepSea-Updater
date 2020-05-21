@@ -101,13 +101,11 @@ namespace dsu
                 for (auto ft : fs::directory_iterator(path))
                 {
                     // Check if the fs in question is a dir (we don't want to list dirs, only files).
-                    if(ft.is_directory()) continue;
-                    
-                    string ext = ft.path().extension().string();
-                    string fname = ft.path().filename().string();;
-                    string fnamext = fname + ext;
+                    if(ft.is_directory()) continue;   
 
-                    files.push_back(fnamext);
+                    string file = ft.path().filename().string();;
+
+                    files.push_back(file);
                 }
             } 
             
