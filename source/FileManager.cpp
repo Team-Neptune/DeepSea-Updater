@@ -23,6 +23,7 @@
 #include <switch.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <filesystem>
 
 #include "FileManager.hpp"
 
@@ -30,18 +31,19 @@
 
 using namespace simpleIniParser;
 using namespace std;
+namespace fs = std::filesystem;
 
-namespace ku
+namespace dsu
 {
-    std::vector<char> FileManager::readFile(std::string path)
+    vector<char> FileManager::readFile(string path)
     {
-        std::ifstream file;
-        file.open(path, std::ios::in | std::ios::binary | std::ios::ate);
+        ifstream file;
+        file.open(path, ios::in | ios::binary | ios::ate);
 
         auto size = file.tellg();
-        file.seekg(0, std::ios::beg);
+        file.seekg(0, ios::beg);
 
-        std::vector<char> buffer(size);
+        vector<char> buffer(size);
         file.read(buffer.data(), size);
         file.close();
 
@@ -69,7 +71,7 @@ namespace ku
 
     bool FileManager::deleteFile(string filename)
     {
-        if (fileExists(filename))
+        if (fs::exists(filename))
         {
             return remove(filename.c_str()) == 0;
         }
@@ -79,18 +81,46 @@ namespace ku
 
     bool FileManager::fileExists(string filename)
     {
-        FILE *file = fopen(filename.c_str(), "r");
-
-        if (file)
-        {
-            fflush(file);
-            fsync(fileno(file));
-            fclose(file);
-            return true;
-        }
-
+        if(fs::exists(filename)) return true;
         return false;
     }
+
+    vector<string> FileManager::getExistingFiles(string path)
+    {
+        DIR *dir;
+        vector<string> files;
+
+        // First check if the dir even exists.
+        if(fs::exists(path))
+        {   
+            // Then make sure it's actually a directory, and not a file. All before
+            // iterating all of the files in the directory.
+            dir = opendir(path.c_str());
+            if(dir != NULL)
+            {
+                for (const auto & ft : fs::directory_iterator(path))
+                {
+                    string file;
+                    string ext = ft.path().extension().string();
+                    string fname = ft.path().filename().string();;
+                    string fextname = ext + fname;
+
+                    if(ext == "")
+                    {
+                        file = fname;
+                    } else
+                    {
+                        file = fextname;
+                    } 
+                    files.push_back(file);
+                }
+            } 
+            
+            closedir(dir);
+
+            return files;
+        }
+    } 
 
     // http://stackoverflow.com/a/11366985
     bool FileManager::createSubfolder(string path)
@@ -367,4 +397,4 @@ namespace ku
         unzCloseCurrentFile(unz);
         return 0;
     }
-} // namespace ku
+} // namespace dsu

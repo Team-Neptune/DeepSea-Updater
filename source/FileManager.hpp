@@ -21,13 +21,14 @@
 #include <string>
 #include <vector>
 
-namespace ku {
+namespace dsu {
     class FileManager {
         public:
             static std::vector<char> readFile(std::string path);
             static bool writeFile(std::string filename, std::string data);
             static bool deleteFile(std::string filename);
             static bool fileExists(std::string filename);
+            static std::vector<std::string> getExistingFiles(std::string path);
             static bool createSubfolder(std::string path);
             static bool extract(std::string filename, std::string destination);
             static void cleanUpFiles();
