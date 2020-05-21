@@ -15,11 +15,13 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <switch.h>
 #include <Swurl.hpp>
 
+#include "FileManager.hpp"
 #include "AssetManager.hpp"
 #include "ConfigManager.hpp"
 #include "SceneDirector.hpp"
@@ -33,9 +35,15 @@ int main(int argc, char **argv)
     SessionManager::initialize();
     SessionManager::userAgent = string("DeepSea-updater/") + VERSION;
 
-    #ifdef DEBUG
-        nxlinkStdio();
-    #endif
+    nxlinkStdio();
+
+    vector<string> f = FileManager::getExistingFiles("sdmc:/switch");
+
+    for(auto i : f)
+    {
+        cout << i << "\n";
+        continue;
+    }
 
     ConfigManager::initialize();
 

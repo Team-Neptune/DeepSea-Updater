@@ -98,21 +98,16 @@ namespace dsu
             dir = opendir(path.c_str());
             if(dir != NULL)
             {
-                for (const auto & ft : fs::directory_iterator(path))
+                for (auto ft : fs::directory_iterator(path))
                 {
-                    string file;
+                    // Check if the fs in question is a dir (we don't want to list dirs, only files).
+                    if(ft.is_directory()) continue;
+                    
                     string ext = ft.path().extension().string();
                     string fname = ft.path().filename().string();;
-                    string fextname = ext + fname;
+                    string fnamext = fname + ext;
 
-                    if(ext == "")
-                    {
-                        file = fname;
-                    } else
-                    {
-                        file = fextname;
-                    } 
-                    files.push_back(file);
+                    files.push_back(fnamext);
                 }
             } 
             
