@@ -17,5 +17,5 @@
 
 #include "Touch.hpp"
 
-namespace ku::models {
+namespace dsu::models {
 }

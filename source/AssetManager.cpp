@@ -20,7 +20,7 @@
 
 using namespace std;
 
-namespace ku {
+namespace dsu {
     void AssetManager::dealloc() {
         if (AssetManager::large_button_font != NULL)
             TTF_CloseFont(AssetManager::large_button_font);

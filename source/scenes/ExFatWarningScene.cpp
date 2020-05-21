@@ -21,10 +21,10 @@
 #include "../ConfigManager.hpp"
 #include "../SceneDirector.hpp"
 
-using namespace ku;
-using namespace ku::views;
+using namespace dsu;
+using namespace dsu::views;
 
-namespace ku::scenes {
+namespace dsu::scenes {
     ExFatWarningScene::ExFatWarningScene() {
         _timeSpent = -10000;
         _footerVisible = false;

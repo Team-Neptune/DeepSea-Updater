@@ -22,7 +22,7 @@
 #include "ControlView.hpp"
 #include "TextView.hpp"
 
-namespace ku::views {
+namespace dsu::views {
     typedef enum {
         DEFAULT,
         SUBTITLE,

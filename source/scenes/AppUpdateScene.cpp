@@ -23,14 +23,14 @@
 #include "../FileManager.hpp"
 #include "../SceneDirector.hpp"
 
-using namespace ku;
-using namespace ku::models;
-using namespace ku::views;
+using namespace dsu;
+using namespace dsu::models;
+using namespace dsu::views;
 using namespace std;
 using namespace std::placeholders;
 using namespace swurl;
 
-namespace ku::scenes
+namespace dsu::scenes
 {
     AppUpdateScene::AppUpdateScene()
     {
@@ -285,4 +285,4 @@ namespace ku::scenes
     {
         _showStatus(error, "Please restart the app to try again.");
     }
-} // namespace ku::scenes
+} // namespace dsu::scenes

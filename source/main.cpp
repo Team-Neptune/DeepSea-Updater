@@ -24,7 +24,7 @@
 #include "ConfigManager.hpp"
 #include "SceneDirector.hpp"
 
-using namespace ku;
+using namespace dsu;
 using namespace std;
 using namespace swurl;
 

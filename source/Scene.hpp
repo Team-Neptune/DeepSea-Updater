@@ -23,7 +23,7 @@
 
 #include "View.hpp"
 
-namespace ku {
+namespace dsu {
     class Scene {
         public:
             Scene();

@@ -28,8 +28,8 @@
 #include "../views/StatusView.hpp"
 #include "../views/UpdateView.hpp"
 
-namespace ku::scenes {
-    class PackageDownloadScene : public ku::Scene {
+namespace dsu::scenes {
+    class PackageDownloadScene : public dsu::Scene {
         public:
             PackageDownloadScene();
             ~PackageDownloadScene();
@@ -38,11 +38,11 @@ namespace ku::scenes {
             void render(SDL_Rect rect, double dTime);
 
         private:
-            ku::views::HeaderView * _headerView = NULL;
-            ku::views::UpdateView * _updateView = NULL;
-            ku::views::StatusView * _statusView = NULL;
-            ku::views::FooterView * _footerView = NULL;
-            ku::views::AlertView * _restartAlertView = NULL;
+            dsu::views::HeaderView * _headerView = NULL;
+            dsu::views::UpdateView * _updateView = NULL;
+            dsu::views::StatusView * _statusView = NULL;
+            dsu::views::FooterView * _footerView = NULL;
+            dsu::views::AlertView * _restartAlertView = NULL;
 
             std::string _DeepSeaVersion = "";
 
@@ -53,7 +53,7 @@ namespace ku::scenes {
             void _clearIram();
 
             void _showStatus(std::string text, std::string subtext, bool wasSuccessful);
-            void _onAlertViewDismiss(ku::ModalView * view, bool success);
+            void _onAlertViewDismiss(dsu::ModalView * view, bool success);
             std::string _getVersionNumber(std::string version);
 
             void _onProgressUpdate(swurl::WebRequest * request, double progress);

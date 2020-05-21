@@ -20,10 +20,10 @@
 #include "../AssetManager.hpp"
 #include "../SceneDirector.hpp"
 
-using namespace ku;
+using namespace dsu;
 using namespace std;
 
-namespace ku::views {
+namespace dsu::views {
     AlertButtonView::AlertButtonView(string title, bool hasFocus, SDL_Rect rect) {
         frame = rect;
 

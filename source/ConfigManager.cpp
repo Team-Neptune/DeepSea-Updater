@@ -19,7 +19,7 @@
 
 using namespace std;
 
-namespace ku {
+namespace dsu {
     void ConfigManager::initialize() {
         config_init(&_cfg);
         config_init(&_internalDb);

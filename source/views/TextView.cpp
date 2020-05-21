@@ -21,10 +21,10 @@
 
 #include "../SceneDirector.hpp"
 
-using namespace ku;
+using namespace dsu;
 using namespace std;
 
-namespace ku::views {
+namespace dsu::views {
     TextView::TextView(TTF_Font * theFont, string theText, SDL_Color theTextColor) : View() {
         isFocusable = false;
         isTouchable = false;

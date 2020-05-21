@@ -21,9 +21,9 @@
 #include "ConfigManager.hpp"
 #include "SceneDirector.hpp"
 
-using namespace ku::scenes;
+using namespace dsu::scenes;
 
-namespace ku
+namespace dsu
 {
     SceneDirector::SceneDirector()
     {
@@ -222,4 +222,4 @@ namespace ku
 
         SDL_RenderPresent(SceneDirector::renderer);
     }
-} // namespace ku
+} // namespace dsu

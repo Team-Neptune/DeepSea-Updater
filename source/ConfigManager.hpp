@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-namespace ku {
+namespace dsu {
     class ConfigManager {
         public:
             static void initialize();

@@ -19,8 +19,8 @@
 
 #include "../View.hpp"
 
-namespace ku::views {
-    class ProgressBarView : public ku::View {
+namespace dsu::views {
+    class ProgressBarView : public dsu::View {
         public:
             double progress;
 
