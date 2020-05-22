@@ -37,14 +37,6 @@ int main(int argc, char **argv)
 
     nxlinkStdio();
 
-    vector<string> f = FileManager::getExistingFiles("sdmc:/switch");
-
-    for(auto i : f)
-    {
-        cout << i << "\n";
-        continue;
-    }
-
     ConfigManager::initialize();
 
     if (ConfigManager::shouldUseProxy()) {

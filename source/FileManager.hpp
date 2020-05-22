@@ -27,6 +27,7 @@ namespace dsu {
             static std::vector<char> readFile(std::string path);
             static bool writeFile(std::string filename, std::string data);
             static bool deleteFile(std::string filename);
+            static bool appendFile(std::string filename, std::string data);
             static bool fileExists(std::string filename);
             static std::vector<std::string> getExistingFiles(std::string path);
             static bool createSubfolder(std::string path);

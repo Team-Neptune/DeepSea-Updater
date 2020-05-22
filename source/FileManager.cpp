@@ -50,6 +50,7 @@ namespace dsu
         return buffer;
     }
 
+    // Overwrites a file if it already exists!
     bool FileManager::writeFile(string filename, string data)
     {
         deleteFile(filename);
@@ -67,6 +68,20 @@ namespace dsu
         fclose(file);
 
         return (result == data.size());
+    }
+
+    bool FileManager::appendFile(string filename, string data)
+    {
+        ofstream file;
+        // Make sure we are only adding, not overwriting.
+        file.open(filename, ios_base::app);
+        
+        if(!file.is_open()) return false;
+
+        file << data;
+
+        file.close();
+        return true;
     }
 
     bool FileManager::deleteFile(string filename)
