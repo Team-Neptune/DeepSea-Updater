@@ -100,9 +100,9 @@ namespace dsu
         return false;
     }
 
-    vector<string> FileManager::getExistingFiles(string path)
+    // This scans all FILES in the given directory and it's respective subdirs.
+    vector<string> FileManager::scanDirectoryRecursive(string path)
     {
-        DIR *dir;
         vector<string> files;
 
         // First check if the dir even exists.
@@ -110,22 +110,16 @@ namespace dsu
         {   
             // Then make sure it's actually a directory, and not a file. All before
             // iterating all of the files in the directory.
-            dir = opendir(path.c_str());
-            if(dir != NULL)
+            if(fs::is_directory(path))
             {
-                for (auto ft : fs::directory_iterator(path))
+                for (auto ft : fs::recursive_directory_iterator(path))
                 {
-                    // Check if the fs in question is a dir (we don't want to list dirs, only files).
-                    if(ft.is_directory()) continue;   
-
-                    string file = ft.path().filename().string();;
-
-                    files.push_back(file);
+                    if(ft.is_directory()) continue;
+                    string path = ft.path().string();
+                    
+                    files.push_back(path);
                 }
             } 
-            
-            closedir(dir);
-
             return files;
         }
     } 

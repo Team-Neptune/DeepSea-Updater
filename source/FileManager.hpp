@@ -29,7 +29,7 @@ namespace dsu {
             static bool deleteFile(std::string filename);
             static bool appendFile(std::string filename, std::string data);
             static bool fileExists(std::string filename);
-            static std::vector<std::string> getExistingFiles(std::string path);
+            static std::vector<std::string> scanDirectoryRecursive(std::string path);
             static bool createSubfolder(std::string path);
             static bool extract(std::string filename, std::string destination);
             static void cleanUpFiles();

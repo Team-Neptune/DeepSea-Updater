@@ -37,6 +37,13 @@ int main(int argc, char **argv)
 
     nxlinkStdio();
 
+    vector<string> f = FileManager::scanDirectoryRecursive("sdmc:/config");
+
+    for (auto i : f)
+    {
+        cout << i << '\n';
+    }
+
     ConfigManager::initialize();
 
     if (ConfigManager::shouldUseProxy()) {
