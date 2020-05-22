@@ -120,8 +120,8 @@ namespace dsu
                     files.push_back(path);
                 }
             } 
-            return files;
         }
+        return files;
     } 
 
     // http://stackoverflow.com/a/11366985
