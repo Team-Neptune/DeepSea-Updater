@@ -36,6 +36,9 @@ namespace dsu {
             setting = config_setting_add(root, RECEIVED_EXFAT_WARNING_KEY.c_str(), CONFIG_TYPE_BOOL);
             config_setting_set_bool(setting, RECEIVED_EXFAT_WARNING_DEF);
 
+            setting = config_setting_add(root, RECEIVED_IGNORE_CONFIG_WARNING_KEY.c_str(), CONFIG_TYPE_BOOL);
+            config_setting_set_bool(setting, RECEIVED_IGNORE_CONFIG_WARNING_DEF);
+
             setting = config_setting_add(root, IGNORE_CONFIG_FILES_KEY.c_str(), CONFIG_TYPE_BOOL);
             config_setting_set_bool(setting, IGNORE_CONFIG_FILES_DEF);
 
@@ -132,6 +135,10 @@ namespace dsu {
         return _readBoolean(RECEIVED_EXFAT_WARNING_KEY, RECEIVED_EXFAT_WARNING_DEF, _internalDb);
     }
 
+    bool ConfigManager::getReceivedIgnoreConfigWarning() {
+        return _readBoolean(RECEIVED_IGNORE_CONFIG_WARNING_KEY, RECEIVED_IGNORE_CONFIG_WARNING_DEF, _internalDb);
+    }
+
     bool ConfigManager::getIgnoreConfigFiles() {
         return _readBoolean(IGNORE_CONFIG_FILES_KEY, IGNORE_CONFIG_FILES_DEF, _internalDb);
     }
@@ -151,6 +158,10 @@ namespace dsu {
 
     bool ConfigManager::setReceivedExFATWarning(bool received) {
         return _writeBoolean(RECEIVED_EXFAT_WARNING_KEY, received, _internalDb, INTERNAL_FILENAME);
+    }
+
+    bool ConfigManager::setReceivedIgnoreConfigWarning(bool received) {
+        return _writeBoolean(RECEIVED_IGNORE_CONFIG_WARNING_KEY, received, _internalDb, INTERNAL_FILENAME);
     }
 
     bool ConfigManager::setIgnoreConfigFiles(bool ignore) {
