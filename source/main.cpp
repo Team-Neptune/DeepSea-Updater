@@ -15,7 +15,6 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <switch.h>
@@ -36,13 +35,6 @@ int main(int argc, char **argv)
     SessionManager::userAgent = string("DeepSea-updater/") + VERSION;
 
     nxlinkStdio();
-
-    vector<string> f = FileManager::scanDirectoryRecursive("sdmc:/config");
-
-    for (auto i : f)
-    {
-        cout << i << '\n';
-    }
 
     ConfigManager::initialize();
 

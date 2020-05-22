@@ -21,6 +21,7 @@
 
 #include "../ConfigManager.hpp"
 #include "../SceneDirector.hpp"
+#include "../FileManager.hpp"
 
 using namespace dsu;
 using namespace dsu::models;
@@ -141,10 +142,7 @@ namespace dsu::scenes
 
     void PackageSelectScene::_showPackageSelectViews(std::string DeepSeaVersion)
     {
-        if (!ConfigManager::getReceivedIgnoreConfigWarning())
-        {
-            _ignoreConfigsAlertView->show();
-        }
+        _ignoreConfigsAlertView->show();
 
         _updateView->hidden = true;
         _statusView->hidden = true;
@@ -203,26 +201,22 @@ namespace dsu::scenes
     {
         if (success && _ignoreConfigsAlertView->getSelectedOption() == 0)
         {
-            vector<string> files;
+            vector<string> files = FileManager::scanDirectoryRecursive("sdmc:/config");
+            // These must be hardcoded (for now) because scanning
+            // those dirs would be more complex and tedios than
+            // just hardcoding them because they are unlikely to change
+            // in the near future.
             files.push_back("sdmc:/atmosphere/config/BCT.ini");
             files.push_back("sdmc:/atmosphere/config/override_config.ini");
             files.push_back("sdmc:/atmosphere/config/system_settings.ini");
             files.push_back("sdmc:/bootloader/patches.ini");
             files.push_back("sdmc:/bootloader/hekate_ipl.ini");
-            files.push_back("sdmc:/config/hid_mitm/config.ini");
-            files.push_back("sdmc:/config/sys-clk/config.ini");
-            files.push_back("sdmc:/config/sys-ftpd/config.ini");
-            files.push_back("sdmc:/config/sys-screenuploader/config.ini");
-            files.push_back("sdmc:/config/nx-hbmenu/settings.cfg");
-            files.push_back("sdmc:/config/hid_mitm/config.ini");
             files.push_back("sdmc:/switch/DeepSea-Toolbox/config.json");
             files.push_back("sdmc:/switch/DeepSea-Updater/internal.db");
             files.push_back("sdmc:/switch/DeepSea-Updater/settings.cfg");
             ConfigManager::setFilesToIgnore(files);
             ConfigManager::setIgnoreConfigFiles(true);
         }
-
-        ConfigManager::setReceivedIgnoreConfigWarning(true);
     }
 
     // Swurl Callback Methods

@@ -159,6 +159,7 @@ namespace dsu
     bool FileManager::extract(string zipFilename, string destination)
     {
         unzFile unz = unzOpen(zipFilename.c_str());
+
         vector<string> filesToIgnore = ConfigManager::getFilesToIgnore();
         vector<string> filesInstalled = ConfigManager::getInstalledFiles();
 
