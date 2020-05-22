@@ -111,18 +111,6 @@ namespace dsu::scenes
             {
                 SceneDirector::exitApp = true;
             }
-
-            if (buttons & KEY_Y)
-            {
-                bool ignoreConfigState = ConfigManager::getIgnoreConfigFiles();
-                if (ignoreConfigState == false)
-                {
-                    ConfigManager::setIgnoreConfigFiles(true);
-                } else if (ignoreConfigState == true)
-                {
-                    ConfigManager::setIgnoreConfigFiles(false);
-                }
-            }
         }
     }
 
@@ -189,17 +177,8 @@ namespace dsu::scenes
             delete action;
         }
         _footerView->actions.clear();
-        string cfgState;
-        if (ConfigManager::getIgnoreConfigFiles() == true)
-        {
-            cfgState = "On";
-        } else if (ConfigManager::getIgnoreConfigFiles() == false)
-        {
-            cfgState = "Off";
-        }
         _footerView->actions.push_back(new Action(A_BUTTON, "OK"));
         _footerView->actions.push_back(new Action(B_BUTTON, "Quit"));
-        _footerView->actions.push_back(new Action(Y_BUTTON, ("Config Toggle: %s", cfgState)));
     }
 
     void PackageSelectScene::_showStatusView(string text, string subtext)
