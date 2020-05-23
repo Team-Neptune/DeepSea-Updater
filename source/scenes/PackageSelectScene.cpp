@@ -61,7 +61,7 @@ namespace dsu::scenes
         vector<string> buttons;
         buttons.push_back("Yes");
         buttons.push_back("No");
-        _ignoreConfigsAlertView = new AlertView("Ignore Config Files?", "Would you like for DeepSea Updater to ignore config\nfiles? This will prevent DeepSea Updater from overwriting\nall config files except for Hekate's main config file.", buttons);
+        _ignoreConfigsAlertView = new AlertView("Ignore Config Files?", "Would you like for DeepSea Updater to ignore config\nfiles? This will prevent DeepSea Updater from overwriting\nall config files except for Hekate's main config file, and save the\nignored files for next time as well.", buttons);
         _ignoreConfigsAlertView->onDismiss = bind(&PackageSelectScene::_onAlertViewDismiss, this, _1, _2);
 
         addSubView(_headerView);
@@ -142,10 +142,10 @@ namespace dsu::scenes
 
     void PackageSelectScene::_showPackageSelectViews(std::string DeepSeaVersion)
     {
-        if (!ConfigManager::getReceivedIgnoreConfigWarning())
-        {
-            _ignoreConfigsAlertView->show();
-        }
+        // if (!ConfigManager::getReceivedIgnoreConfigWarning())
+        // {
+        _ignoreConfigsAlertView->show();
+        // }
         
         _updateView->hidden = true;
         _statusView->hidden = true;
@@ -206,7 +206,7 @@ namespace dsu::scenes
         {
             vector<string> files = FileManager::scanDirectoryRecursive("sdmc:/config");
             // These must be hardcoded (for now) because scanning
-            // those dirs would be more complex and tedios than
+            // those dirs would be more complex and tedious than
             // just hardcoding them because they are unlikely to change
             // in the near future.
             files.push_back("sdmc:/atmosphere/config/BCT.ini");
@@ -220,6 +220,7 @@ namespace dsu::scenes
             ConfigManager::setFilesToIgnore(files);
             ConfigManager::setIgnoreConfigFiles(true);
         }
+        ConfigManager::setIgnoreConfigFiles(false);
     }
 
     // Swurl Callback Methods

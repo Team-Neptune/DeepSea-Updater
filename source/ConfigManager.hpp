@@ -40,14 +40,14 @@ namespace dsu {
             static std::string getCurrentVersion();
             static std::vector<std::string> getInstalledFiles();
             static bool getReceivedExFATWarning();
-            static bool getReceivedIgnoreConfigWarning();
+            // static bool getReceivedIgnoreConfigWarning();
             static bool getIgnoreConfigFiles();
             static int getInternalConfigVersion();
 
             static bool setCurrentVersion(std::string version);
             static bool setInstalledFiles(std::vector<std::string> files);
             static bool setReceivedExFATWarning(bool received);
-            static bool setReceivedIgnoreConfigWarning(bool received);
+            // static bool setReceivedIgnoreConfigWarning(bool received);
             static bool setIgnoreConfigFiles(bool ignore);
 
         private:
@@ -99,8 +99,8 @@ namespace dsu {
             static inline const std::string RECEIVED_EXFAT_WARNING_KEY = "received_exfat_warning";
             static inline const bool RECEIVED_EXFAT_WARNING_DEF = false;
 
-            static inline const std::string RECEIVED_IGNORE_CONFIG_WARNING_KEY = "received_ignore_config_warning";
-            static inline const bool RECEIVED_IGNORE_CONFIG_WARNING_DEF = false;
+            // static inline const std::string RECEIVED_IGNORE_CONFIG_WARNING_KEY = "received_ignore_config_warning";
+            // static inline const bool RECEIVED_IGNORE_CONFIG_WARNING_DEF = false;
 
             static inline const std::string IGNORE_CONFIG_FILES_KEY = "ignore_config_files";
             static inline const bool IGNORE_CONFIG_FILES_DEF = false;
