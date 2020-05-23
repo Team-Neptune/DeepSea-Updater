@@ -233,7 +233,10 @@ namespace dsu::scenes
                 files.push_back(i);
             }
 
-            ConfigManager::setFilesToIgnore(files);
+            if(!files.empty()) 
+            {
+                ConfigManager::setFilesToIgnore(files);    
+            }
             ConfigManager::setIgnoreConfigFiles(true);
         } else {
             ConfigManager::setIgnoreConfigFiles(false);
