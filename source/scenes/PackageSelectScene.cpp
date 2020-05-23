@@ -205,6 +205,9 @@ namespace dsu::scenes
         if (success && _ignoreConfigsAlertView->getSelectedOption() == 0)
         {
             vector<string> files = FileManager::scanDirectoryRecursive("sdmc:/config");
+            vector<string> filesToIgnore = ConfigManager::getFilesToIgnore();
+            std::set<string> sortedFileSet;
+
             // These must be hardcoded (for now) because scanning
             // those dirs would be more complex and tedious than
             // just hardcoding them because they are unlikely to change
@@ -217,6 +220,19 @@ namespace dsu::scenes
             files.push_back("sdmc:/switch/DeepSea-Toolbox/config.json");
             files.push_back("sdmc:/switch/DeepSea-Updater/internal.db");
             files.push_back("sdmc:/switch/DeepSea-Updater/settings.cfg");
+
+            // Insert both config files and files already registered to be ignored into a set
+            // for removing duplicates.
+            sortedFileSet.insert(files.begin(), files.end());
+            sortedFileSet.insert(filesToIgnore.begin(), filesToIgnore.end());
+
+            if(files.empty()) files.clear();
+
+            for (auto i : sortedFileSet)
+            {
+                files.push_back(i);
+            }
+
             ConfigManager::setFilesToIgnore(files);
             ConfigManager::setIgnoreConfigFiles(true);
         } else {

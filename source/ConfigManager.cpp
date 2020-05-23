@@ -116,11 +116,9 @@ namespace dsu {
         return _readInt(CONFIG_VERSION_KEY, CONFIG_VERSION_DEF, _cfg);
     }
 
-
     bool ConfigManager::setFilesToIgnore(vector<string> files) {
         return _appendArrayOfStrings(IGNORE_KEY, files, _cfg, CONFIG_FILENAME);
     }
-
 
     string ConfigManager::getCurrentVersion() {
         return _readString(VERSION_KEY, VERSION_DEF, _internalDb);
@@ -146,7 +144,6 @@ namespace dsu {
     int ConfigManager::getInternalConfigVersion() {
         return _readInt(CONFIG_VERSION_KEY, CONFIG_VERSION_DEF, _internalDb);
     }
-
 
     bool ConfigManager::setCurrentVersion(string version) {
         return _writeString(VERSION_KEY, version, _internalDb, INTERNAL_FILENAME);
