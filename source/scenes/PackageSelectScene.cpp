@@ -219,8 +219,9 @@ namespace dsu::scenes
             files.push_back("sdmc:/switch/DeepSea-Updater/settings.cfg");
             ConfigManager::setFilesToIgnore(files);
             ConfigManager::setIgnoreConfigFiles(true);
+        } else {
+            ConfigManager::setIgnoreConfigFiles(false);
         }
-        ConfigManager::setIgnoreConfigFiles(false);
     }
 
     // Swurl Callback Methods
