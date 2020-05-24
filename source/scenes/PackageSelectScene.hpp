@@ -18,7 +18,6 @@
 #pragma once
 
 #include <switch.h>
-#include <set>
 #include <Swurl.hpp>
 
 #include "../Scene.hpp"
