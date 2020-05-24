@@ -206,7 +206,7 @@ namespace dsu::scenes
         {
             vector<string> files = FileManager::scanDirectoryRecursive("sdmc:/config");
             vector<string> filesToIgnore = ConfigManager::getFilesToIgnore();
-            std::set<string> sortedFileSet;
+            set<string> sortedFileSet;
 
             // These must be hardcoded (for now) because scanning
             // those dirs would be more complex and tedious than
@@ -226,7 +226,7 @@ namespace dsu::scenes
             sortedFileSet.insert(files.begin(), files.end());
             sortedFileSet.insert(filesToIgnore.begin(), filesToIgnore.end());
 
-            if(files.empty()) files.clear();
+            if(!files.empty()) files.clear();
 
             for (auto i : sortedFileSet)
             {
