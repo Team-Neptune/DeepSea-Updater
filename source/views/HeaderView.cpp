@@ -20,9 +20,9 @@
 #include "../AssetManager.hpp"
 #include "../SceneDirector.hpp"
 
-using namespace ku;
+using namespace dsu;
 
-namespace ku::views {
+namespace dsu::views {
     HeaderView::HeaderView(string title, bool showIcon) : View() {
         isFocusable = false;
         isTouchable = false;

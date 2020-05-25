@@ -28,8 +28,8 @@
 #include "../views/UpdateView.hpp"
 #include "../views/AlertView.hpp"
 
-namespace ku::scenes {
-    class PackageSelectScene : public ku::Scene {
+namespace dsu::scenes {
+    class PackageSelectScene : public dsu::Scene {
         public:
             PackageSelectScene();
             ~PackageSelectScene();
@@ -38,12 +38,12 @@ namespace ku::scenes {
             void render(SDL_Rect rect, double dTime);
 
         private:
-            ku::views::HeaderView * _headerView = NULL;
-            ku::views::UpdateView * _updateView = NULL;
-            ku::views::StatusView * _statusView = NULL;
-            ku::views::ListRowView * _installRowView = NULL;
-            ku::views::FooterView * _footerView = NULL;
-            ku::views::AlertView * _ignoreConfigsAlertView = NULL;
+            dsu::views::HeaderView * _headerView = NULL;
+            dsu::views::UpdateView * _updateView = NULL;
+            dsu::views::StatusView * _statusView = NULL;
+            dsu::views::ListRowView * _installRowView = NULL;
+            dsu::views::FooterView * _footerView = NULL;
+            dsu::views::AlertView * _ignoreConfigsAlertView = NULL;
 
             swurl::WebRequest * _DeepSeaVersionRequest = NULL;
         
@@ -51,7 +51,7 @@ namespace ku::scenes {
             void _showPackageSelectViews(std::string DeepSeaVersion);
             void _showStatusView(std::string text, std::string subtext);
 
-            void _onAlertViewDismiss(ku::ModalView * view, bool success);
+            void _onAlertViewDismiss(dsu::ModalView * view, bool success);
 
             void _onProgressUpdate(swurl::WebRequest * request, double progress);
             void _onCompleted(swurl::WebRequest * request);

@@ -24,8 +24,8 @@
 
 #include "View.hpp"
 
-namespace ku {
-    class ModalView : public ku::View {
+namespace dsu {
+    class ModalView : public dsu::View {
         public:
             std::function<void(ModalView *, bool)> onDismiss;
         

@@ -22,9 +22,9 @@
 #include "../AssetManager.hpp"
 #include "../SceneDirector.hpp"
 
-using namespace ku;
+using namespace dsu;
 
-namespace ku::views {
+namespace dsu::views {
     SDL_Color ControlView::_generateSelectionColor() {
         SDL_Color color1 = AssetManager::selected_border_1;
         SDL_Color color2 = AssetManager::selected_border_2;

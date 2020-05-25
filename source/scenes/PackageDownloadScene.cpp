@@ -31,15 +31,15 @@
 static __attribute__((aligned(0x1000))) u8 g_ff_page[0x1000];
 static __attribute__((aligned(0x1000))) u8 g_work_page[0x1000];
 
-using namespace ku;
-using namespace ku::models;
-using namespace ku::views;
+using namespace dsu;
+using namespace dsu::models;
+using namespace dsu::views;
 using namespace simpleIniParser;
 using namespace std;
 using namespace std::placeholders;
 using namespace swurl;
 
-namespace ku::scenes {
+namespace dsu::scenes {
     PackageDownloadScene::PackageDownloadScene() {
         SessionManager::onProgressChanged = bind(&PackageDownloadScene::_onProgressUpdate, this, _1, _2);
         SessionManager::onCompleted = bind(&PackageDownloadScene::_onCompleted, this, _1);

@@ -22,8 +22,8 @@
 #include "../Scene.hpp"
 #include "../views/TextView.hpp"
 
-namespace ku::scenes {
-    class ExFatWarningScene : public ku::Scene {
+namespace dsu::scenes {
+    class ExFatWarningScene : public dsu::Scene {
         public:
             ExFatWarningScene();
             ~ExFatWarningScene();
@@ -35,8 +35,8 @@ namespace ku::scenes {
             double _timeSpent;
             bool _footerVisible;
 
-            ku::views::TextView * _headerTextView;
-            ku::views::TextView * _bodyTextView;
-            ku::views::TextView * _footerTextView;
+            dsu::views::TextView * _headerTextView;
+            dsu::views::TextView * _bodyTextView;
+            dsu::views::TextView * _footerTextView;
     };
 }

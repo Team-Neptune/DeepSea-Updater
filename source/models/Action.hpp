@@ -20,7 +20,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-namespace ku::models {
+namespace dsu::models {
     typedef enum {
         A_BUTTON,
         B_BUTTON,

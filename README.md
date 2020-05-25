@@ -17,3 +17,4 @@ A homebrew application for the Nintendo Switch that will automatically update yo
 
 * Thanks to vgmoose for examples on using minizip in appstorenx.
 * Thanks to y4my4m and natinusala in the ReSwitched discord for their discussions around libcurl.
+* Thanks to alex. for improving the config and other elements in FileManager.

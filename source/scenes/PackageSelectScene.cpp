@@ -21,15 +21,16 @@
 
 #include "../ConfigManager.hpp"
 #include "../SceneDirector.hpp"
+#include "../FileManager.hpp"
 
-using namespace ku;
-using namespace ku::models;
-using namespace ku::views;
+using namespace dsu;
+using namespace dsu::models;
+using namespace dsu::views;
 using namespace std;
 using namespace std::placeholders;
 using namespace swurl;
 
-namespace ku::scenes
+namespace dsu::scenes
 {
     PackageSelectScene::PackageSelectScene()
     {
@@ -60,7 +61,7 @@ namespace ku::scenes
         vector<string> buttons;
         buttons.push_back("Yes");
         buttons.push_back("No");
-        _ignoreConfigsAlertView = new AlertView("Ignore Config Files?", "Would you like for DeepSea Updater to ignore config\nfiles? This will prevent DeepSea Updater from overwriting\nall config files except for Hekate's main config file.", buttons);
+        _ignoreConfigsAlertView = new AlertView("Ignore Config Files?", "Would you like for DeepSea Updater to ignore config\nfiles? This will prevent DeepSea Updater from overwriting\nall config files except for Hekate's main config file, and save the\nignored files for next time as well.", buttons);
         _ignoreConfigsAlertView->onDismiss = bind(&PackageSelectScene::_onAlertViewDismiss, this, _1, _2);
 
         addSubView(_headerView);
@@ -141,11 +142,11 @@ namespace ku::scenes
 
     void PackageSelectScene::_showPackageSelectViews(std::string DeepSeaVersion)
     {
-        if (!ConfigManager::getReceivedIgnoreConfigWarning())
-        {
-            _ignoreConfigsAlertView->show();
-        }
-
+        // if (!ConfigManager::getReceivedIgnoreConfigWarning())
+        // {
+        _ignoreConfigsAlertView->show();
+        // }
+        
         _updateView->hidden = true;
         _statusView->hidden = true;
 
@@ -203,26 +204,30 @@ namespace ku::scenes
     {
         if (success && _ignoreConfigsAlertView->getSelectedOption() == 0)
         {
-            vector<string> files;
+            vector<string> files = FileManager::scanDirectoryRecursive("sdmc:/config");
+            vector<string> filesToIgnore = ConfigManager::getFilesToIgnore();
             files.push_back("sdmc:/atmosphere/config/BCT.ini");
             files.push_back("sdmc:/atmosphere/config/override_config.ini");
             files.push_back("sdmc:/atmosphere/config/system_settings.ini");
             files.push_back("sdmc:/bootloader/patches.ini");
             files.push_back("sdmc:/bootloader/hekate_ipl.ini");
-            files.push_back("sdmc:/config/hid_mitm/config.ini");
-            files.push_back("sdmc:/config/sys-clk/config.ini");
-            files.push_back("sdmc:/config/sys-ftpd/config.ini");
-            files.push_back("sdmc:/config/sys-screenuploader/config.ini");
-            files.push_back("sdmc:/config/nx-hbmenu/settings.cfg");
-            files.push_back("sdmc:/config/hid_mitm/config.ini");
             files.push_back("sdmc:/switch/DeepSea-Toolbox/config.json");
             files.push_back("sdmc:/switch/DeepSea-Updater/internal.db");
             files.push_back("sdmc:/switch/DeepSea-Updater/settings.cfg");
-            ConfigManager::setFilesToIgnore(files);
-            ConfigManager::setIgnoreConfigFiles(true);
-        }
 
-        ConfigManager::setReceivedIgnoreConfigWarning(true);
+            if(filesToIgnore.empty())
+            {
+                ConfigManager::setFilesToIgnore(files);
+            } else {
+                for (auto i : filesToIgnore)
+                {
+                    files.erase(remove(files.begin(), files.end(), i), files.end());
+                }
+            }
+            ConfigManager::setIgnoreConfigFiles(true);
+        } else {
+            ConfigManager::setIgnoreConfigFiles(false);
+        }
     }
 
     // Swurl Callback Methods
@@ -269,4 +274,4 @@ namespace ku::scenes
     {
         _showStatusView(error, "Please restart the app to try again.");
     }
-} // namespace ku::scenes
+} // namespace dsu::scenes

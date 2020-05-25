@@ -23,6 +23,7 @@
 #include <switch.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <filesystem>
 
 #include "FileManager.hpp"
 
@@ -30,24 +31,26 @@
 
 using namespace simpleIniParser;
 using namespace std;
+namespace fs = std::filesystem;
 
-namespace ku
+namespace dsu
 {
-    std::vector<char> FileManager::readFile(std::string path)
+    vector<char> FileManager::readFile(string path)
     {
-        std::ifstream file;
-        file.open(path, std::ios::in | std::ios::binary | std::ios::ate);
+        ifstream file;
+        file.open(path, ios::in | ios::binary | ios::ate);
 
         auto size = file.tellg();
-        file.seekg(0, std::ios::beg);
+        file.seekg(0, ios::beg);
 
-        std::vector<char> buffer(size);
+        vector<char> buffer(size);
         file.read(buffer.data(), size);
         file.close();
 
         return buffer;
     }
 
+    // Overwrites a file if it already exists!
     bool FileManager::writeFile(string filename, string data)
     {
         deleteFile(filename);
@@ -67,9 +70,23 @@ namespace ku
         return (result == data.size());
     }
 
+    bool FileManager::appendFile(string filename, string data)
+    {
+        ofstream file;
+        // Make sure we are only adding, not overwriting.
+        file.open(filename, ios_base::app);
+        
+        if(!file.is_open()) return false;
+
+        file << data;
+
+        file.close();
+        return true;
+    }
+
     bool FileManager::deleteFile(string filename)
     {
-        if (fileExists(filename))
+        if (fs::exists(filename))
         {
             return remove(filename.c_str()) == 0;
         }
@@ -79,18 +96,33 @@ namespace ku
 
     bool FileManager::fileExists(string filename)
     {
-        FILE *file = fopen(filename.c_str(), "r");
-
-        if (file)
-        {
-            fflush(file);
-            fsync(fileno(file));
-            fclose(file);
-            return true;
-        }
-
+        if(fs::exists(filename)) return true;
         return false;
     }
+
+    // This scans all FILES in the given directory and it's respective subdirs.
+    vector<string> FileManager::scanDirectoryRecursive(string path)
+    {
+        vector<string> files;
+
+        // First check if the dir even exists.
+        if(fs::exists(path))
+        {   
+            // Then make sure it's actually a directory, and not a file. All before
+            // iterating all of the files in the directory.
+            if(fs::is_directory(path))
+            {
+                for (auto ft : fs::recursive_directory_iterator(path))
+                {
+                    if(ft.is_directory()) continue;
+                    string path = ft.path().string();
+                    
+                    files.push_back(path);
+                }
+            } 
+        }
+        return files;
+    } 
 
     // http://stackoverflow.com/a/11366985
     bool FileManager::createSubfolder(string path)
@@ -127,6 +159,7 @@ namespace ku
     bool FileManager::extract(string zipFilename, string destination)
     {
         unzFile unz = unzOpen(zipFilename.c_str());
+
         vector<string> filesToIgnore = ConfigManager::getFilesToIgnore();
         vector<string> filesInstalled = ConfigManager::getInstalledFiles();
 
@@ -367,4 +400,4 @@ namespace ku
         unzCloseCurrentFile(unz);
         return 0;
     }
-} // namespace ku
+} // namespace dsu

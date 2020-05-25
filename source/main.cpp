@@ -20,11 +20,12 @@
 #include <switch.h>
 #include <Swurl.hpp>
 
+#include "FileManager.hpp"
 #include "AssetManager.hpp"
 #include "ConfigManager.hpp"
 #include "SceneDirector.hpp"
 
-using namespace ku;
+using namespace dsu;
 using namespace std;
 using namespace swurl;
 
@@ -33,9 +34,7 @@ int main(int argc, char **argv)
     SessionManager::initialize();
     SessionManager::userAgent = string("DeepSea-updater/") + VERSION;
 
-    #ifdef DEBUG
-        nxlinkStdio();
-    #endif
+    nxlinkStdio();
 
     ConfigManager::initialize();
 

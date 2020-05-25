@@ -17,7 +17,7 @@
 
 #include "Scene.hpp"
 
-namespace ku {
+namespace dsu {
     Scene::Scene() {
         _touchedView = NULL;
     }

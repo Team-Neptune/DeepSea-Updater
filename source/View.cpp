@@ -17,7 +17,7 @@
 
 #include "View.hpp"
 
-namespace ku {
+namespace dsu {
     View::View() {
         frame = { 0, 0, 0, 0 };
         hidden = false;

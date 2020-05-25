@@ -26,8 +26,8 @@
 #include "../ModalView.hpp"
 #include "TextView.hpp"
 
-namespace ku::views {
-    class AlertView : public ku::ModalView {
+namespace dsu::views {
+    class AlertView : public dsu::ModalView {
         public:
             AlertView(std::string title, std::string message, std::vector<std::string> buttons);
             ~AlertView();

@@ -22,9 +22,9 @@
 #include "../AssetManager.hpp"
 #include "../SceneDirector.hpp"
 
-using namespace ku;
+using namespace dsu;
 
-namespace ku::views {
+namespace dsu::views {
     ProgressBarView::ProgressBarView() : View() {
         progress = 0;
     }

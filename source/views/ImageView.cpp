@@ -19,9 +19,9 @@
 
 #include "../SceneDirector.hpp"
 
-using namespace ku;
+using namespace dsu;
 
-namespace ku::views {
+namespace dsu::views {
     ImageView::ImageView(SDL_Texture * image) : View() {
         _image = image;
     }

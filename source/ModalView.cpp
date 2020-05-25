@@ -18,7 +18,7 @@
 #include "ModalView.hpp"
 #include "SceneDirector.hpp"
 
-namespace ku {
+namespace dsu {
     void ModalView::show() {
         SceneDirector::modal = this;
     }

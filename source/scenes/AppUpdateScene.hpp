@@ -27,8 +27,8 @@
 #include "../views/StatusView.hpp"
 #include "../views/UpdateView.hpp"
 
-namespace ku::scenes {
-    class AppUpdateScene : public ku::Scene {
+namespace dsu::scenes {
+    class AppUpdateScene : public dsu::Scene {
         public:
             AppUpdateScene();
             ~AppUpdateScene();
@@ -37,10 +37,10 @@ namespace ku::scenes {
             void render(SDL_Rect rect, double dTime);
 
         private:
-            ku::views::HeaderView * _headerView = NULL;
-            ku::views::UpdateView * _updateView = NULL;
-            ku::views::StatusView * _statusView = NULL;
-            ku::views::FooterView * _footerView = NULL;
+            dsu::views::HeaderView * _headerView = NULL;
+            dsu::views::UpdateView * _updateView = NULL;
+            dsu::views::StatusView * _statusView = NULL;
+            dsu::views::FooterView * _footerView = NULL;
 
             swurl::WebRequest * _appVersionRequest = NULL;
             swurl::WebRequest * _appRequest = NULL;
