@@ -206,11 +206,6 @@ namespace dsu::scenes
         {
             vector<string> files = FileManager::scanDirectoryRecursive("sdmc:/config");
             vector<string> filesToIgnore = ConfigManager::getFilesToIgnore();
-
-            // These must be hardcoded (for now) because scanning
-            // those dirs would be more complex and tedious than
-            // just hardcoding them because they are unlikely to change
-            // in the near future.
             files.push_back("sdmc:/atmosphere/config/BCT.ini");
             files.push_back("sdmc:/atmosphere/config/override_config.ini");
             files.push_back("sdmc:/atmosphere/config/system_settings.ini");
