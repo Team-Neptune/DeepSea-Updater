@@ -206,7 +206,7 @@ namespace dsu
             }
 
             // No need to extract DeepSea Updater.
-            if (filename.compare(0, 28, "sdmc:/switch/DeepSea-Updater/") == 0)
+            if (filename.compare(0, 29, "sdmc:/switch/DeepSea-Updater/") == 0)
             {
                 free(fileInfo);
                 continue;
