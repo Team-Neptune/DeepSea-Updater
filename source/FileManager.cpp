@@ -198,6 +198,11 @@ namespace dsu
                 continue;
             }
 
+            // Special Logic for protected Atmosphere files.
+            if (filename == "sdmc:/atmosphere/fusee-secondary.bin" || filename == "sdmc:/sept/payload.bin") {
+                filename += ".new";
+            }
+
             // No need to extract Hekate's payload.
             if (filename.compare(0, 12, "sdmc:/hekate") == 0 && filename.compare(filename.length() - 4, 4, ".bin") == 0)
             {

@@ -62,12 +62,6 @@ namespace dsu::scenes {
         _footerView = new FooterView();
         _footerView->frame = { 0, 647, 1280, 73 };
 
-        vector<string> buttons;
-        buttons.push_back("Restart");
-        buttons.push_back("Quit");
-        _restartAlertView = new AlertView("Are you sure?", "Restarting while using an ExFAT formatted SD card\nwill cause it to corrupt. It is recommended that if\nyou have an ExFAT formatted SD card to quit,\npress the home button, and restart the switch.", buttons);
-        _restartAlertView->onDismiss = bind(&PackageDownloadScene::_onAlertViewDismiss, this, _1, _2);
-
         addSubView(_headerView);
         addSubView(_updateView);
         addSubView(_statusView);
@@ -98,12 +92,30 @@ namespace dsu::scenes {
 
     void PackageDownloadScene::handleButton(u32 buttons, double dTime) {
         if (!_statusView->hidden && buttons & KEY_A) {
-            SceneDirector::exitApp = true;
-        }
+            if (_updateSuccessful) {
+                auto payload = FileManager::readFile("romfs:/deepsea_rcm.bin");
+                if (payload.size() == 0) {
+                    SceneDirector::exitApp = true;
+                    return;
+                }
 
-        if (!_statusView->hidden && _footerView->actions.size() == 2 && buttons & KEY_X) {
-            _restartAlertView->reset();
-            _restartAlertView->show();
+                Result rc = splInitialize();
+                if (R_FAILED(rc)) {
+                    SceneDirector::exitApp = true;
+                    return;
+                }
+
+                this->_clearIram();
+
+                for (size_t i = 0; i < IRAM_PAYLOAD_MAX_SIZE; i += 0x1000) {
+                    this->_copyToIram(IRAM_PAYLOAD_BASE + i, &payload[i], 0x1000);
+                }
+
+                splSetConfig((SplConfigItem) 65001, 2);
+                splExit();
+            } else {
+                SceneDirector::exitApp = true;
+            }
         }
     }
 
@@ -144,39 +156,12 @@ namespace dsu::scenes {
         _updateView->hidden = true;
         _statusView->hidden = false;
 
-        _footerView->actions.push_back(new Action(A_BUTTON, "Quit"));
+        _updateSuccessful = wasSuccessful;
+
         if (wasSuccessful) {
-            _footerView->actions.push_back(new Action(X_BUTTON, "Restart"));
-        }
-    }
-
-    void PackageDownloadScene::_onAlertViewDismiss(ModalView * view, bool success) {
-        if (success) {
-            if (_restartAlertView->getSelectedOption() == 0) {
-                auto payload = FileManager::readFile("sdmc:/bootloader/update.bin");
-                if (payload.size() == 0) {
-                    SceneDirector::exitApp = true;
-                    return;
-                }
-
-                Result rc = splInitialize();
-                if (R_FAILED(rc)) {
-                    SceneDirector::exitApp = true;
-                    return;
-                }
-
-                this->_clearIram();
-
-                for (size_t i = 0; i < IRAM_PAYLOAD_MAX_SIZE; i += 0x1000) {
-                    this->_copyToIram(IRAM_PAYLOAD_BASE + i, &payload[i], 0x1000);
-                }
-
-                splSetConfig((SplConfigItem) 65001, 2);
-                splExit();
-            }
-            else {
-                SceneDirector::exitApp = true;
-            }
+            _footerView->actions.push_back(new Action(A_BUTTON, "Restart"));
+        } else {
+            _footerView->actions.push_back(new Action(A_BUTTON, "Quit"));
         }
     }
 
