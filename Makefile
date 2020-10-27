@@ -47,7 +47,7 @@ ROMFS		:=	romfs
 APP_TITLE	:=	DeepSea Updater
 APP_AUTHOR	:=	FennecTECH,Nichole Mattera
 
-APP_VERSION 		:= 4.2.1
+APP_VERSION 		:= 4.2.2
 APP_VERSION_MAJOR	:= 4
 APP_VERSION_MINOR	:= 2
 APP_VERSION_PATCH	:= 1
