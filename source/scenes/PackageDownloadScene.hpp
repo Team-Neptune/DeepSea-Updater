@@ -20,7 +20,6 @@
 #include <string>
 #include <Swurl.hpp>
 
-#include "../ModalView.hpp"
 #include "../Scene.hpp"
 #include "../views/AlertView.hpp"
 #include "../views/FooterView.hpp"
@@ -42,18 +41,18 @@ namespace dsu::scenes {
             dsu::views::UpdateView * _updateView = NULL;
             dsu::views::StatusView * _statusView = NULL;
             dsu::views::FooterView * _footerView = NULL;
-            dsu::views::AlertView * _restartAlertView = NULL;
 
             std::string _DeepSeaVersion = "";
 
             swurl::WebRequest * _DeepSeaUrlRequest = NULL;
             swurl::WebRequest * _DeepSeaRequest = NULL;
 
+            bool _updateSuccessful = false;
+
             void _copyToIram(uintptr_t iram_addr, void *buf, size_t size);
             void _clearIram();
 
             void _showStatus(std::string text, std::string subtext, bool wasSuccessful);
-            void _onAlertViewDismiss(dsu::ModalView * view, bool success);
             std::string _getVersionNumber(std::string version);
 
             void _onProgressUpdate(swurl::WebRequest * request, double progress);

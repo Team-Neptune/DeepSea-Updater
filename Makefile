@@ -191,6 +191,8 @@ endif
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) -C $(CURDIR)/SimpleIniParser -f $(CURDIR)/SimpleIniParser/Makefile
 	@$(MAKE) -C $(CURDIR)/Swurl -f $(CURDIR)/Swurl/Makefile
+	@$(MAKE) -C $(CURDIR)/rcm -f $(CURDIR)/rcm/Makefile
+	@cp $(CURDIR)/rcm/output/deepsea_rcm.bin $(CURDIR)/romfs/deepsea_rcm.bin
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 #---------------------------------------------------------------------------------

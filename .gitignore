@@ -1,5 +1,8 @@
 .vscode
 build
+rcm/build
+rcm/output
+romfs/deepsea_rcm.bin
 Swurl/debug
 Swurl/lib
 Swurl/release
